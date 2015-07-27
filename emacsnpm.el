@@ -4,16 +4,22 @@
 
 ;;; Code:
 
+(require 'json)
+
 (defvar emacsnpm-package nil)
+(defvar emacsnpm-packgageJSON nil)
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
   (interactive)
-  (setq emacsnpm-package (find-file-upwards "package.json"))
+  (setq emacsnpm-package (emacsnpm-find-file "package.json"))
   (message emacsnpm-package)
+  ;; (find-file emacsnpm-package)
+  (setq emacsnpm-packgageJSON (emacsnpm-string-from-file emacsnpm-package))
+  (message emacsnpm-packgageJSON)
   )
 
-(defun find-file-upwards (file-to-find &optional starting-path)
+(defun emacsnpm-find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
 looking for a file with name file-to-find.  Returns the path to it
 or nil if not found.
@@ -35,6 +41,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
            ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
            (t (find-file-r (directory-file-name parent))))))) ; Continue
     (find-file-r (if starting-path starting-path default-directory))))
+
+(defun emacsnpm-string-from-file (file)
+  "Return FILE's content."
+  (with-temp-buffer
+    (insert-file-contents file)
+    (buffer-string)))
 
 (defun emacsnpm-start ()
   "Run the npm start command."
