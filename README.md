@@ -23,4 +23,5 @@ This will open the `package.json` contained in your directory
 # TODO #
 
 * Automatically build a list of available npm commands from a `package.json`
+* Ability to run npm init
 * Host project on MELPA
