@@ -7,13 +7,13 @@
 (defun emacsnpm-start ()
   "Run the npm start command."
   (interactive)
-  (shell-command "npm start")
+  (shell-command "npm start &")
   )
 
 (defun emacsnpm-test ()
   "Run the npm test command."
   (interactive)
-  (shell-command "npm test")
+  (shell-command "npm test &")
   )
 
 (provide 'emacsnpm)
