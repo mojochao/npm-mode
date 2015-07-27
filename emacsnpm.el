@@ -6,7 +6,8 @@
 
 (require 'json)
 
-(defvar emacsnpm-package-file nil)
+(defvar emacsnpm-package-file nil
+  "The appropriate package.json file for a user's project.")
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
