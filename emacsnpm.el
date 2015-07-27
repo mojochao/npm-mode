@@ -51,6 +51,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (insert-file-contents file)
     (buffer-string)))
 
+(defun emacsnpm-open-package ()
+  "Open the appropriate package.json ."
+  (interactive)
+  (find-file emacsnpm-package-file)
+  )
+
 (defun emacsnpm-start ()
   "Run the npm start command."
   (interactive)
