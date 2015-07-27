@@ -45,7 +45,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-test ()
   "Run the npm test command."
   (interactive)
-  ;; (shell-command "npm test &")
+  (shell-command "npm test &")
   )
 
 (defun emacsnpm-stop ()
