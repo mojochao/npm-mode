@@ -14,11 +14,14 @@
   (interactive)
   (setq emacsnpm-package (emacsnpm-find-file "package.json"))
   (message emacsnpm-package)
-  ;; (find-file emacsnpm-package)
-  (setq emacsnpm-packgageJSON (emacsnpm-string-from-file emacsnpm-package))
-  (message emacsnpm-packgageJSON)
+  (setq emacsnpm-packgageJSON (concat (emacsnpm-string-from-file emacsnpm-package)))
+  (let* ((json-object-type 'hash-table)
+          (json-contents
+            (shell-command-to-string (concat "cat " emacsnpm-package)))
+          (json-hash (json-read-from-string json-contents)))
+    (message (gethash "main" json-hash)))
   )
-
+  
 (defun emacsnpm-find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
 looking for a file with name file-to-find.  Returns the path to it
