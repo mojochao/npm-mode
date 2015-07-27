@@ -16,5 +16,11 @@
   (shell-command "npm test &")
   )
 
+(defun emacsnpm-stop ()
+  "Run the npm stop command."
+  (interactive)
+  (shell-command "npm stop &")
+  )
+
 (provide 'emacsnpm)
 ;;; emacsnpm.el ends here
