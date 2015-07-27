@@ -8,6 +8,8 @@
 
 (defvar emacsnpm-package-file nil
   "The appropriate package.json file for a user's project.")
+(defvar emacsnpm-commands nil
+  "The available npm commands, populated by the script object in the package.json .")
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
