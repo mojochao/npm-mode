@@ -6,18 +6,18 @@
 
 (require 'json)
 
-(defvar emacsnpm-package nil)
+(defvar emacsnpm-package-file nil)
 (defvar emacsnpm-packgageJSON nil)
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
   (interactive)
-  (setq emacsnpm-package (emacsnpm-find-file "package.json"))
-  (message emacsnpm-package)
-  (setq emacsnpm-packgageJSON (concat (emacsnpm-string-from-file emacsnpm-package)))
+  (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
+  (message emacsnpm-package-file)
+  (setq emacsnpm-packgageJSON (concat (emacsnpm-string-from-file emacsnpm-package-file)))
   (let* ((json-object-type 'hash-table)
           (json-contents
-            (shell-command-to-string (concat "cat " emacsnpm-package)))
+            (shell-command-to-string (concat "cat " emacsnpm-package-file)))
           (json-hash (json-read-from-string json-contents)))
     (message (gethash "main" json-hash)))
   )
