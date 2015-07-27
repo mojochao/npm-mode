@@ -58,6 +58,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (find-file emacsnpm-package-file)
   )
 
+(defun emacsnpm-init ()
+  "Run the npm init command."
+  (interactive)
+  (shell-command "npm init &")
+  )
+
 (defun emacsnpm-start ()
   "Run the npm start command."
   (interactive)
