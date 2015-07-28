@@ -17,8 +17,7 @@
           (json-contents
             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
           (json-hash (json-read-from-string json-contents))
-          (commands (list))
-          )
+          (commands (list)))
     (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash "scripts" json-hash))
     commands))
 
