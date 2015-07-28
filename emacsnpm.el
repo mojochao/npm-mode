@@ -65,25 +65,8 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-init ()
   "Run the npm init command."
   (interactive)
-  (start-process-shell-command "npm init" "emacsnpm" (shell-command "npm init &"))
-  )
-
-(defun emacsnpm-start ()
-  "Run the npm start command."
-  (interactive)
-  (shell-command "npm start &")
-  )
-
-(defun emacsnpm-test ()
-  "Run the npm test command."
-  (interactive)
-  (shell-command "npm test &")
-  )
-
-(defun emacsnpm-stop ()
-  "Run the npm stop command."
-  (interactive)
-  (shell-command "npm stop &")
+  (start-process-shell-command "emacsnpm-init" "*emacsnpm*" "npm init")
+  (switch-to-buffer "*emacsnpm*")
   )
 
 (provide 'emacsnpm)
