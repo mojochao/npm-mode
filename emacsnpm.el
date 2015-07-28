@@ -22,7 +22,7 @@
           (json-hash (json-read-from-string json-contents))
           (emacsnpm-commands (list))
           )
-    (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key)))) (gethash "scripts" json-hash))
+    (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key (format "%s %s" "npm" key))))) (gethash "scripts" json-hash))
     (message emacsnpm-commands)
     )
   )
