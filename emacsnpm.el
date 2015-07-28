@@ -9,18 +9,6 @@
 (defvar emacsnpm-package-file nil
   "The appropriate package.json file for a user's project.")
 
-;; (defun emacsnpm-parse ()
-;;   "Parsing the package.json ."
-;;   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
-;;   (message emacsnpm-package-file)
-;;   (let* ((json-object-type 'hash-table)
-;;           (json-contents
-;;             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
-;;           (json-hash (json-read-from-string json-contents))
-;;           (emacsnpm-commands (list))
-;;           )
-;;     (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key (format "%s %s" "npm" key))))) (gethash "scripts" json-hash))))
-
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
   (interactive)
