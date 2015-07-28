@@ -19,10 +19,14 @@
   (let* ((json-object-type 'hash-table)
           (json-contents
             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
-          (json-hash (json-read-from-string json-contents)))
-    (message (gethash "main" json-hash)))
+          (json-hash (json-read-from-string json-contents))
+          (emacsnpm-commands (list))
+          )
+    (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key)))) (gethash "scripts" json-hash))
+    (message emacsnpm-commands)
+    )
   )
-  
+
 (defun emacsnpm-find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
 looking for a file with name file-to-find.  Returns the path to it
@@ -61,7 +65,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-init ()
   "Run the npm init command."
   (interactive)
-  (shell-command "npm init &")
+  (start-process-shell-command "npm init" "emacsnpm" (shell-command "npm init &"))
   )
 
 (defun emacsnpm-start ()
