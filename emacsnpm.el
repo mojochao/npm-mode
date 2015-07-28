@@ -13,7 +13,6 @@
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
-  (interactive)
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (message emacsnpm-package-file)
   (let* ((json-object-type 'hash-table)
