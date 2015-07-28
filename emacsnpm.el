@@ -8,20 +8,31 @@
 
 (defvar emacsnpm-package-file nil
   "The appropriate package.json file for a user's project.")
-(defvar emacsnpm-commands nil
-  "The available npm commands, populated by the script object in the package.json .")
+
+;; (defun emacsnpm-parse ()
+;;   "Parsing the package.json ."
+;;   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
+;;   (message emacsnpm-package-file)
+;;   (let* ((json-object-type 'hash-table)
+;;           (json-contents
+;;             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
+;;           (json-hash (json-read-from-string json-contents))
+;;           (emacsnpm-commands (list))
+;;           )
+;;     (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key (format "%s %s" "npm" key))))) (gethash "scripts" json-hash))))
 
 (defun emacsnpm-parse ()
   "Parsing the package.json ."
+  (interactive)
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
-  (message emacsnpm-package-file)
   (let* ((json-object-type 'hash-table)
           (json-contents
             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
           (json-hash (json-read-from-string json-contents))
-          (emacsnpm-commands (list))
+          (commands (list))
           )
-    (maphash (lambda (key value) (setq emacsnpm-commands (append emacsnpm-commands (list key (format "%s %s" "npm" key))))) (gethash "scripts" json-hash))))
+    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash "scripts" json-hash))
+    commands))
 
 (defun emacsnpm-find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
@@ -51,6 +62,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
+
+(defun emacsnpm-exec ()
+  "Call any of the available commands defined in the script object of the package.json ."
+  (interactive (list (ido-completing-read
+                       "Run command: " (mapcar (lambda (x) (car x)) (emacsnpm-parse)))))
+  )
 
 (defun emacsnpm-open-package ()
   "Open the appropriate package.json ."
