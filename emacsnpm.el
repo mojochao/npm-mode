@@ -2,6 +2,8 @@
 
 ;;; Commentary:
 
+;; This package is intended to provide easy interaction with NPM in Emacs
+
 ;;; Code:
 
 (require 'json)
