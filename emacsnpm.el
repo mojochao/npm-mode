@@ -10,7 +10,7 @@
   "The appropriate package.json file for a user's project.")
 
 (defun emacsnpm-parse ()
-  "Parsing the package.json ."
+  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'scripts' property in the package.json ."
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (let* ((json-object-type 'hash-table)
           (json-contents
