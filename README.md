@@ -18,6 +18,11 @@ From anywhere inside a directory which contains a `package.json` run the followi
 
 > `emacsnpm-open-package`
 
+# Running npm-init #
+From anywhere inside a directory in which you wish to initialise npm run the following command:
+
+> `emacsnpm-init`
+
 This will open the `package.json` contained in your directory
 
 # TODO #
