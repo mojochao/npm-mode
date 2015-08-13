@@ -71,9 +71,10 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (let ((command  (ido-completing-read
                 "Run command: " (emacsnpm-parse))))
     (message "Running npm script: %s" command)
+    (switch-to-buffer "emacsnpm" command)
+    (erase-buffer)
     (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " command))
     (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
-    (switch-to-buffer "emacsnpm" command)
     ))
   
 (defun emacsnpm-open-package ()
