@@ -68,12 +68,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-exec ()
   "Call any of the available commands defined in the script object of the package.json ."
   (interactive)
-  (let ((var  (ido-completing-read
+  (let ((command  (ido-completing-read
                 "Run command: " (emacsnpm-parse))))
-    (message "Running npm script: %s" var)
-    (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " var))
+    (message "Running npm script: %s" command)
+    (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " command))
     (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
-    (switch-to-buffer "emacsnpm" var)
+    (switch-to-buffer "emacsnpm" command)
     ))
   
 (defun emacsnpm-open-package ()
