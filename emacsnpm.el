@@ -70,7 +70,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (interactive)
   (let ((var  (ido-completing-read
                 "Run command: " (emacsnpm-parse))))
-    (message "Running command: %s" var)
+    (message "Running npm script: %s" var)
     (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " var))
     (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
     (switch-to-buffer "emacsnpm" var)
