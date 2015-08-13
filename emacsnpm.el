@@ -51,6 +51,21 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (insert-file-contents file)
     (buffer-string)))
 
+(defun ordinary-insertion-filter (proc string)
+  "Given a PROC, a STRING is passed through which then has colors applied to it."
+  (when (buffer-live-p (process-buffer proc))
+    (with-current-buffer (process-buffer proc)
+      (let ((moving (= (point) (process-mark proc))))
+        (save-excursion
+          ;; Insert the text, advancing the process marker.
+          (goto-char (process-mark proc))
+          (insert string)
+          (message string)
+          (ansi-color-apply-on-region (process-mark proc) (point))
+          (set-marker (process-mark proc) (point)))
+        (if moving (goto-char (process-mark proc)))))))
+
+
 (defun emacsnpm-exec ()
   "Call any of the available commands defined in the script object of the package.json ."
   (interactive)
@@ -58,6 +73,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
                 "Run command: " (emacsnpm-parse))))
     (message "YOU CHOSE: %s" var)
     (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " var))
+    (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
     (switch-to-buffer "emacsnpm" var)
     ))
   
