@@ -16,16 +16,21 @@ Add it to your Emacs' `load-path`:
 
 From anywhere inside a directory which contains a `package.json` run the following command:
 
-> `emacsnpm-open-package`
+#### `emacsnpm-open-package`
 
 # Running npm-init 
 From anywhere inside a directory in which you wish to initialise npm run the following command:
 
-> `emacsnpm-init`
+#### `emacsnpm-init`
 
 This will open the `package.json` contained in your directory
 
-#
+# Running npm commands
+From anywhere inside a directory that contains a `package.json` run the following command:
+
+#### `emacsnpm-exec`
+
+This will provide you with a list of possible commands which are populated from the script object in the `package.json`.
 
 # TODO 
 
