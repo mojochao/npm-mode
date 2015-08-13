@@ -60,7 +60,6 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
           ;; Insert the text, advancing the process marker.
           (goto-char (process-mark proc))
           (insert string)
-          (message string)
           (ansi-color-apply-on-region (process-mark proc) (point))
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc)))))))
@@ -71,7 +70,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (interactive)
   (let ((var  (ido-completing-read
                 "Run command: " (emacsnpm-parse))))
-    (message "YOU CHOSE: %s" var)
+    (message "Running command: %s" var)
     (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " var))
     (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
     (switch-to-buffer "emacsnpm" var)
