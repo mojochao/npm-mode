@@ -53,10 +53,14 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 
 (defun emacsnpm-exec ()
   "Call any of the available commands defined in the script object of the package.json ."
-  (interactive (list (ido-completing-read
-                       "Run command: " (mapcar (lambda (x) (car x)) (emacsnpm-parse)))))
-  )
-
+  (interactive)
+  (let ((var  (ido-completing-read
+                "Run command: " (emacsnpm-parse))))
+    (message "YOU CHOSE: %s" var)
+    (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " var))
+    (switch-to-buffer "emacsnpm" var)
+    ))
+  
 (defun emacsnpm-open-package ()
   "Open the appropriate package.json ."
   (interactive)
