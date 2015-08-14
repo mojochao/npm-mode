@@ -80,6 +80,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-open-package ()
   "Open the appropriate package.json ."
   (interactive)
+  (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (find-file emacsnpm-package-file)
   )
 
