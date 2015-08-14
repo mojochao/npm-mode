@@ -14,6 +14,8 @@
 (defun emacsnpm-parse ()
   "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'scripts' property in the package.json ."
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
+  (unless emacsnpm-package-file
+    (error "ERROR: Couldn't find a package.json in your current or parent directory"))
   (let* ((json-object-type 'hash-table)
           (json-contents
             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
