@@ -81,7 +81,8 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Open the appropriate package.json ."
   (interactive)
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
-  (find-file emacsnpm-package-file)
+  (when emacsnpm-package-file
+    (find-file emacsnpm-package-file))
   )
 
 (defun emacsnpm-init ()
