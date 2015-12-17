@@ -76,8 +76,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (switch-to-buffer "emacsnpm" command)
     (erase-buffer)
     (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " command))
-    (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)
-    ))
+    (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)))
   
 (defun emacsnpm-open-package ()
   "Open the appropriate package.json ."
@@ -85,15 +84,13 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (if emacsnpm-package-file
     (find-file emacsnpm-package-file)
-    (error "ERROR: Couldn't find a package.json in your current or parent directory"))
-  )
+    (error "ERROR: Couldn't find a package.json in your current or parent directory")))
 
 (defun emacsnpm-init ()
   "Run the npm init command."
   (interactive)
   (start-process-shell-command "emacsnpm-init" "*emacsnpm*" "npm init")
-  (switch-to-buffer "*emacsnpm*")
-  )
+  (switch-to-buffer "*emacsnpm*"))
   
 (defun emacsnpm-save (dependency)
   "Install and save a DEPENDENCY."
