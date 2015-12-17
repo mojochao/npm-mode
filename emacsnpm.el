@@ -102,5 +102,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (start-process-shell-command "emacsnpm-save" "*emacsnpm*" (format "npm install %s --save" dependency))
   (switch-to-buffer "*emacsnpm*"))
 
+(defun emacsnpm-save-dev (dependency)
+  "Install and save a dev DEPENDENCY."
+  (interactive "sEnter package name: ")
+  (message "Running npm install %s --save-dev" dependency)
+  (start-process-shell-command "emacsnpm-save-dev" "*emacsnpm*" (format "npm install %s --save-dev" dependency))
+  (switch-to-buffer "*emacsnpm*"))
+
 (provide 'emacsnpm)
 ;;; emacsnpm.el ends here
