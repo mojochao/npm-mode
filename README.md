@@ -39,6 +39,10 @@ From anywhere inside a directory that contains a `package.json` run the followin
 
 This will run prompt you for the name of a package and run `npm install --save` for that package
 
+#### `emacsnpm-save-dev`
+
+This will run prompt you for the name of a package and run `npm install --save-dev` for that package
+
 # TODO 
 
 * Host project on MELPA
