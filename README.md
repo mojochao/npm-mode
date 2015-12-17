@@ -4,11 +4,11 @@
 
 Clone this repo:
 
-> `git clone https://github.com/AlexChesters/emacs-npm.git`
+`git clone https://github.com/AlexChesters/emacs-npm.git`
 
 Add it to your Emacs' `load-path`:
 
-> `(add-to-list load-path '/path/to/emacs-npm/')`
+`(add-to-list load-path '/path/to/emacs-npm/')`
 
 # Usage
 
@@ -31,6 +31,13 @@ From anywhere inside a directory that contains a `package.json` run the followin
 #### `emacsnpm-exec`
 
 This will provide you with a list of possible commands which are populated from the script object in the `package.json`.
+
+# Saving npm dependencies
+From anywhere inside a directory that contains a `package.json` run the following command:
+
+#### `emacsnpm-save`
+
+This will run prompt you for the name of a package and run `npm install --save` for that package
 
 # TODO 
 
