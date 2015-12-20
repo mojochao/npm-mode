@@ -89,22 +89,22 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-init ()
   "Run the npm init command."
   (interactive)
-  (ansi-term (getenv "SHELL") "emacsnpminit")
-  (comint-send-string "*emacsnpminit*" "npm init\n"))
+  (ansi-term (getenv "SHELL") "emacsnpm-init")
+  (comint-send-string "*emacsnpm-init*" "npm init\n"))
   
 (defun emacsnpm-save (dependency)
   "Install and save a DEPENDENCY."
   (interactive "sEnter package name: ")
   (message "Running npm install %s --save" dependency)
-  (ansi-term (getenv "SHELL") "emacsnpmsave")
-  (comint-send-string "*emacsnpmsave*" (format "npm install %s --save\n" dependency)))
+  (ansi-term (getenv "SHELL") "emacsnpm-save")
+  (comint-send-string "*emacsnpm-save*" (format "npm install %s --save\n" dependency)))
 
 (defun emacsnpm-save-dev (dependency)
   "Install and save a dev DEPENDENCY."
   (interactive "sEnter package name: ")
   (message "Running npm install %s --save-dev" dependency)
-  (ansi-term (getenv "SHELL") "emacsnpmsavedev")
-  (comint-send-string "*emacsnpmsavedev*" (format "npm install %s --save-dev\n" dependency)))
+  (ansi-term (getenv "SHELL") "emacsnpm-save-dev")
+  (comint-send-string "*emacsnpm-save-dev*" (format "npm install %s --save-dev\n" dependency)))
 
 (provide 'emacsnpm)
 ;;; emacsnpm.el ends here
