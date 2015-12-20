@@ -75,8 +75,8 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (message "Running npm script: %s" command)
     (switch-to-buffer "emacsnpm" command)
     (erase-buffer)
-    (start-process-shell-command "emacsnpm" "emacsnpm" (concat  "npm run-script " command))
-    (set-process-filter (get-buffer-process "emacsnpm") 'ordinary-insertion-filter)))
+    (ansi-term (getenv "SHELL") "emacsnpm-exec")
+    (comint-send-string "*emacsnpm-exec*" (format "npm run-script %s\n" command))))
   
 (defun emacsnpm-open-package ()
   "Open the appropriate package.json ."
