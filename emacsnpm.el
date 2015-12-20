@@ -96,15 +96,15 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Install and save a DEPENDENCY."
   (interactive "sEnter package name: ")
   (message "Running npm install %s --save" dependency)
-  (start-process-shell-command "emacsnpm-save" "*emacsnpm*" (format "npm install %s --save" dependency))
-  (switch-to-buffer "*emacsnpm*"))
+  (ansi-term (getenv "SHELL") "emacsnpmsave")
+  (comint-send-string "*emacsnpmsave*" (format "npm install %s --save\n" dependency)))
 
 (defun emacsnpm-save-dev (dependency)
   "Install and save a dev DEPENDENCY."
   (interactive "sEnter package name: ")
   (message "Running npm install %s --save-dev" dependency)
-  (start-process-shell-command "emacsnpm-save-dev" "*emacsnpm*" (format "npm install %s --save-dev" dependency))
-  (switch-to-buffer "*emacsnpm*"))
+  (ansi-term (getenv "SHELL") "emacsnpmsavedev")
+  (comint-send-string "*emacsnpmsavedev*" (format "npm install %s --save-dev\n" dependency)))
 
 (provide 'emacsnpm)
 ;;; emacsnpm.el ends here
