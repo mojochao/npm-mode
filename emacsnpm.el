@@ -89,8 +89,8 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-init ()
   "Run the npm init command."
   (interactive)
-  (start-process-shell-command "emacsnpm-init" "*emacsnpm*" "npm init")
-  (switch-to-buffer "*emacsnpm*"))
+  (ansi-term (getenv "SHELL") "emacsnpminit")
+  (comint-send-string "*emacsnpminit*" "npm init\n"))
   
 (defun emacsnpm-save (dependency)
   "Install and save a DEPENDENCY."
