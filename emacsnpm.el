@@ -66,7 +66,6 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc)))))))
 
-
 (defun emacsnpm-exec ()
   "Call any of the available commands defined in the script object of the package.json ."
   (interactive)
