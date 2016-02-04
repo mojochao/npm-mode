@@ -79,7 +79,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (comint-send-string "*emacsnpm-exec*" (format "npm run-script %s\n" command))))
   
 (defun emacsnpm-open-package ()
-  "Open the appropriate package.json ."
+  "Open the appropriate package.json file."
   (interactive)
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (if emacsnpm-package-file
