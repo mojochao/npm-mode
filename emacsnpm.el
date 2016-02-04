@@ -69,8 +69,9 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun emacsnpm-exec ()
   "Call any of the available commands defined in the script object of the package.json ."
   (interactive)
-  (let ((command  (ido-completing-read
-                "Run command: " (emacsnpm-parse))))
+  (let ((command
+          (ido-completing-read
+            "Run command: " (emacsnpm-parse))))
     (message "Running npm script: %s" command)
     (switch-to-buffer "emacsnpm" command)
     (erase-buffer)
