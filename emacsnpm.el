@@ -11,8 +11,8 @@
 (defvar emacsnpm-package-file nil
   "The appropriate package.json file for a user's project.")
 
-(defun emacsnpm-parse ()
-  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'scripts' property in the package.json ."
+(defun emacsnpm-get-hash-from-package (hash)
+  "Get the given HASH from the package.json file."
   (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
   (unless emacsnpm-package-file
     (error "ERROR: Couldn't find a package.json in your current or parent directory"))
@@ -21,8 +21,16 @@
             (shell-command-to-string (concat "cat " emacsnpm-package-file)))
           (json-hash (json-read-from-string json-contents))
           (commands (list)))
-    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash "scripts" json-hash))
+    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash hash json-hash))
     commands))
+
+(defun emacsnpm-get-scripts ()
+  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'scripts' property in the package.json ."
+  (emacsnpm-get-hash-from-package "scripts"))
+
+(defun emacsnpm-get-dependencies ()
+  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'dependencies' property in the package.json ."
+  (emacsnpm-get-hash-from-package "dependencies"))
 
 (defun emacsnpm-find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
@@ -71,7 +79,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (interactive)
   (let ((command
           (ido-completing-read
-            "Run command: " (emacsnpm-parse))))
+            "Run command: " (emacsnpm-get-scripts))))
     (message "Running npm script: %s" command)
     (switch-to-buffer "emacsnpm" command)
     (erase-buffer)
@@ -97,6 +105,18 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (interactive)
   (ansi-term (getenv "SHELL") "emacsnpm-install")
   (comint-send-string "*emacsnpm-install*" "npm install\n"))
+
+(defun emacsnpm-uninstall ()
+  "Run the npm uninstall command."
+  (interactive)
+  (let ((command
+          (ido-completing-read
+            "Uninstall dependency: " (emacsnpm-get-dependencies))))
+    (message "Uninstalling: %s" command)
+    (switch-to-buffer "emacsnpm" command)
+    (erase-buffer)
+    (ansi-term (getenv "SHELL") "emacsnpm-uninstall")
+    (comint-send-string "*emacsnpm-uninstall*" (format "npm uninstall --save %s\n" command))))
   
 (defun emacsnpm-save (dependency)
   "Install and save a DEPENDENCY."
