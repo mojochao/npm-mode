@@ -91,6 +91,12 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (interactive)
   (ansi-term (getenv "SHELL") "emacsnpm-init")
   (comint-send-string "*emacsnpm-init*" "npm init\n"))
+
+(defun emacsnpm-install ()
+  "Run the npm install command."
+  (interactive)
+  (ansi-term (getenv "SHELL") "emacsnpm-install")
+  (comint-send-string "*emacsnpm-install*" "npm install\n"))
   
 (defun emacsnpm-save (dependency)
   "Install and save a DEPENDENCY."
