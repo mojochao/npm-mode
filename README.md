@@ -1,6 +1,8 @@
 # npm-mode
 
-This repository provides an Emacs minor mode for working with [NPM](https://www.npmjs.com/) projects.
+This repository provides an (Emacs)[https://www.gnu.org/software/emacs/] minor 
+mode for working with [NPM](https://www.npmjs.com/) projects.
+
 ## Installation
 
 The recommended way to install npm-mode.el is through [MELPA](https://github.com/milkypostman/melpa).
