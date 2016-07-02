@@ -1,74 +1,86 @@
-# Emacs-npm
+# npm-mode
 
-# Setup
+## Installation
 
-Clone this repo:
+The recommended way to install npm-mode.el is through [MELPA](https://github.com/milkypostman/melpa).
 
-`git clone https://github.com/AlexChesters/emacs-npm.git`
+Otherwise, clone this repo:
 
-Add it to your Emacs' `load-path`:
+`git clone https://github.com/mojochao/npm-mode.git /your/path/here`
 
-`(add-to-list load-path '/path/to/emacs-npm/')`
+In your emacs configuration, add the repo to the load path and require it:
 
-Enable the mode globally:
+```
+(add-to-list load-path '/your/path/here/npm-mode')
+(require 'npm-mode)
+```
 
-`(emacsnpm-global-mode)`
+## Configuration
+
+This package provides a minor mode which can be activated with:
+
+`(npm-mode)`
+
+It can also be activated globally with:
+
+`(npm-global-mode)`
 
 ## Commands
 
-### `emacsnpm-global-mode`
+### npm-global-mode ###
 
-Running <kbd>M-x emacsnpm-global-mode</kbd> creates keybindings to the
-various emacsnpm commands. The keymap prefix is `C-c n` by default and can be
-changed with <kbd>M-x customize-variable emacsnpm-keymap-prefix</kbd>.
+Running <kbd>M-x npm-global-mode</kbd> creates keybindings to the
+various npm-mode commands. The mode command prefix is `C-c n` by default and 
+can be changed with <kbd>M-x customize-variable npm-mode-keymap-prefix</kbd>.
 
-| command               | Keymap       | Description                  |
-|-----------------------|--------------|------------------------------|
-| emacsnpm-init         | <kbd>n</kbd> | Initialize new package.json  |
-| emacsnpm-open-package | <kbd>e</kbd> | Edit package.json            |
-| emacsnpm-install      | <kbd>i</kbd> | Install dependencies         |
-| emacsnpm-exec         | <kbd>r</kbd> | Run script                   |
-| emacsnpm-save         | <kbd>s</kbd> | Install dependency           |
-| emacsnpm-save-dev     | <kbd>d</kbd> | Install dev dependency       |
-| emacsnpm-uninstall    | <kbd>u</kbd> | Uninstall project package    |
-|                       | <kbd>?</kbd> | Display keymap commands      |
+| command                       | keymap       | description                    |
+|-------------------------------|--------------|--------------------------------|
+| npm-mode/npm-init             | <kbd>n</kbd> | Initialize new project         |
+| npm-mode/npm-install          | <kbd>i</kbd> | Install project dependencies   |
+| npm-mode/npm-install-save     | <kbd>s</kbd> | Install new dependency         |
+| npm-mode/npm-install-save-dev | <kbd>d</kbd> | Install new dev dependency     |
+| npm-mode/npm-uninstall        | <kbd>u</kbd> | Uninstall project dependency   |
+| npm-mode/npm-run              | <kbd>r</kbd> | Run project script             |
+| npm-mode/visit-project-file   | <kbd>v</kbd> | Visit project file             |
+|                               | <kbd>?</kbd> | Display keymap commands        |
 
 You can also call the commands directly.
 
-### `emacsnpm-init`
+### npm-mode/npm-init
 
-Running <kbd>C-c n n</kbd> will create a new npm project in the current directory.
+Running <kbd>C-c n n</kbd> will create a new project in the current directory.
 
-### `emacsnpm-open-package`
+### npm-mode/npm-install
 
-Running <kbd>C-c n e</kbd> in an npm project directory will open the project 
-package.json file in a buffer for editing
-
-### `emacsnpm-install`
-
-Running <kbd>C-c n i</kbd> in an npm project directory will install the project
+Running <kbd>C-c n i</kbd> in a project directory will install all project
 dependencies.
 
-### `emacsnpm-exec`
+### npm-mode/npm-install-save
 
-Running <kbd>C-c n r</kbd> in an npm project directory will prompt for the
-name of a script to run and will run it. Completion support is provided.
+Running <kbd>C-c n S</kbd> in a project directory will prompt for the name of a
+package to install and will install it as a project dependency.
 
-#### `emacsnpm-save`
+### npm-mode/npm-install-save-dev
 
-Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
-name of a package to install and install it as a project dependency.
+Running <kbd>C-c n D</kbd> in a project directory will prompt for the name of a
+to install and will install it as a project dev dependency.
 
-#### `emacsnpm-save-dev`
+### npm-mode/npm-uninstall
 
-Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
-name of a package to install and install it as a project dev dependency.
+Running <kbd>C-c n u</kbd> in a project directory will prompt for the name of a
+package to uninstall and will uninstall it and remove it from project dependencies.
 
-#### `emacsnpm-uninstall`
+### npm-mode/npm-run
 
-Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
-name of a package to uninstall and uninstall it as a project dependency.
+Running <kbd>C-c n r</kbd> in a project directory will prompt for the name of a
+script to run and will run it. Completion support is provided.
 
-# TODO 
+### npm-mode/visit-project-file
 
-* Host project on MELPA
+Running <kbd>C-c n v</kbd> in a project directory will visit the project file
+in a buffer.
+
+## TODO
+
+Add npm-mode/npm-debug command that will run a project script under the node 
+debugger, and bind it to <kbd>C-c n d</kbd> in mode command keymap.

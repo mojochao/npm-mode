@@ -176,28 +176,8 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (ansi-term (getenv "SHELL") "npm-mode/npm-run")
     (comint-send-string "*npm-mode/npm-run*" (format "npm run-script %s\n" command))))
   
-(defun npm-mode/npm-run-debug ()
-  "Run the 'npm run' command on a project script under the node debugger."
-  (interactive)
-  (let ((command
-          (ido-completing-read
-            "Run command: " (npm-mode/get-project-scripts))))
-    (message "Debugging npm script: %s" command)
-    (switch-to-buffer npm-mode/buffer-name command)
-    (erase-buffer)
-    (ansi-term (getenv "SHELL") "npm-mode/npm-run-debug")
-    (comint-send-string "*npm-mode/npm-run*" (format "npm run-script %s\n" command))))
-  
 (defun npm-mode/visit-project-file ()
   "Visit the project file."
-  (interactive)
-  (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
-  (if npm-mode/project-file
-    (find-file npm-mode/project-file)
-    (error npm-mode/no-project-file-found)))
-
-(defun npm-mode/visit-project-dir ()
-  "Visit the project directory."
   (interactive)
   (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
   (if npm-mode/project-file
@@ -220,9 +200,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     (define-key map "d" 'npm-mode/npm-install-save-dev)
     (define-key map "u" 'npm-mode/npm-uninstall)
     (define-key map "r" 'npm-mode/npm-run)
-    (define-key map "R" 'npm-mode/npm-run-debug)
     (define-key map "v" 'npm-mode/visit-project-file)
-    (define-key map "V" 'npm-mode/visit-project-dir)
     map)
   "Keymap for `npm-mode' commands.")
 
