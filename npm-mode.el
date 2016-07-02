@@ -1,38 +1,90 @@
-;;; emacsnpm.el --- Easy interaction with npm in emacs
+;;; npm-mode.el --- minor mode for working with npm projects
+
+;; Author: Allen Gooch <allen.gooch@gmail.com>
+;; URL: https://github.com/mojochao/npm-mode
+;; Keywords: convenience, project, javascript, node, npm
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "24.4"))
+
+;; This file is NOT part of GNU Emacs.
+
+;; This program is free software; you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation; either version 3, or (at your option)
+;; any later version.
+;;
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs; see the file COPYING.  If not, write to the
+;; Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
+;; Boston, MA 02110-1301, USA.
 
 ;;; Commentary:
 
-;; This package is intended to provide easy interaction with NPM in Emacs
+;; This package allows you to easily work with npm projects. Its API
+;; provides many useful functions, as well as a minor mode providing a
+;; convenient command keymap for interactive use.
+;;
+;; | command                       | keymap       | description                          |
+;; |-------------------------------|--------------|--------------------------------------|
+;; | npm-mode/npm-init             | <kbd>n</kbd> | initialize new project               |
+;; | npm-mode/npm-install          | <kbd>i</kbd> | install project dependencies         |
+;; | npm-mode/npm-install-save     | <kbd>s</kbd> | install new project dependency       |
+;; | npm-mode/npm-install-save-dev | <kbd>d</kbd> | install new project dev dependency   |
+;; | npm-mode/npm-uninstall        | <kbd>u</kbd> | uninstall project dependency         |
+;; | npm-mode/visit-project-file   | <kbd>v</kbd> | visit project file                   |
+;; | npm-mode/visit-project-dir    | <kbd>V</kbd> | visit project directory              |
+;; | npm-mode/npm-run              | <kbd>r</kbd> | run project script                   |
+;; | npm-mode/npm-run-debug        | <kbd>R</kbd> | run project script                   |
+;; |                               | <kbd>?</kbd> | display keymap commands              |
+
+;;; Credit:
+
+;; This package began as a fork of the https://github.com/AlexChesters/emacs-npm repo.
+;; Many thanks to Alex.
 
 ;;; Code:
 
 (require 'json)
 
-(defvar emacsnpm-package-file nil
-  "The appropriate package.json file for a user's project.")
+(defvar npm-mode/project-file-name "package.json"
+  "The name of npm project files.")
 
-(defun emacsnpm-get-hash-from-package (hash)
-  "Get the given HASH from the package.json file."
-  (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
-  (unless emacsnpm-package-file
-    (error "ERROR: Couldn't find a package.json in your current or parent directory"))
+(defvar npm-mode/project-file nil
+  "The current project file.")
+
+(defvar npm-mode/no-project-file-found "error: no project file found"
+  "Error message for missing project file.")
+
+(defvar npm-mode/buffer-name "*npm-mode*"
+  "Name of npm mode buffers.")
+
+(defun npm-mode/get-project-property (prop)
+  "Get the given PROP from the current project file."
+  (setq npm-mode/project-file (npm-mode/npm-find-file npm-mode/project-file-name))
+  (unless npm-mode/project-file
+    (error npm-mode/no-project-file-found))
   (let* ((json-object-type 'hash-table)
           (json-contents
-            (shell-command-to-string (concat "cat " emacsnpm-package-file)))
+            (shell-command-to-string (concat "cat " npm-mode/project-file)))
           (json-hash (json-read-from-string json-contents))
           (commands (list)))
-    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash hash json-hash))
+    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash prop json-hash))
     commands))
 
-(defun emacsnpm-get-scripts ()
-  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'scripts' property in the package.json ."
-  (emacsnpm-get-hash-from-package "scripts"))
+(defun npm-mode/get-project-scripts ()
+  "Get a list of project scripts."
+  (npm-mode/get-project-property "scripts"))
 
-(defun emacsnpm-get-dependencies ()
-  "Parsing the appropriate package.json file and returning a list of npm commands as found in the 'dependencies' property in the package.json ."
-  (emacsnpm-get-hash-from-package "dependencies"))
+(defun npm-mode/get-project-dependencies ()
+  "Get a list of project dependencies."
+  (npm-mode/get-project-property "dependencies"))
 
-(defun emacsnpm-find-file (file-to-find &optional starting-path)
+(defun npm-mode/find-file (file-to-find &optional starting-path)
   "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
 looking for a file with name file-to-find.  Returns the path to it
 or nil if not found.
@@ -55,13 +107,13 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
            (t (find-file-r (directory-file-name parent))))))) ; Continue
     (find-file-r (if starting-path starting-path default-directory))))
 
-(defun emacsnpm-string-from-file (file)
-  "Return FILE's content."
+(defun npm-mode/string-from-file (file)
+  "Return FILE's content as a string."
   (with-temp-buffer
     (insert-file-contents file)
     (buffer-string)))
 
-(defun ordinary-insertion-filter (proc string)
+(defun npm-mode/ordinary-insertion-filter (proc string)
   "Given a PROC, a STRING is passed through which then has colors applied to it."
   (when (buffer-live-p (process-buffer proc))
     (with-current-buffer (process-buffer proc)
@@ -74,102 +126,124 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
           (set-marker (process-mark proc) (point)))
         (if moving (goto-char (process-mark proc)))))))
 
-(defun emacsnpm-exec ()
-  "Call any of the available commands defined in the script object of the package.json ."
-  (interactive)
-  (let ((command
-          (ido-completing-read
-            "Run command: " (emacsnpm-get-scripts))))
-    (message "Running npm script: %s" command)
-    (switch-to-buffer "emacsnpm" command)
-    (erase-buffer)
-    (ansi-term (getenv "SHELL") "emacsnpm-exec")
-    (comint-send-string "*emacsnpm-exec*" (format "npm run-script %s\n" command))))
-  
-(defun emacsnpm-open-package ()
-  "Open the appropriate package.json file."
-  (interactive)
-  (setq emacsnpm-package-file (emacsnpm-find-file "package.json"))
-  (if emacsnpm-package-file
-    (find-file emacsnpm-package-file)
-    (error "ERROR: Couldn't find a package.json in your current or parent directory")))
-
-(defun emacsnpm-init ()
+(defun npm-mode/npm-init ()
   "Run the npm init command."
   (interactive)
-  (ansi-term (getenv "SHELL") "emacsnpm-init")
-  (comint-send-string "*emacsnpm-init*" "npm init\n"))
+  (ansi-term (getenv "SHELL") "npm-mode/npm-init")
+  (comint-send-string "*npm-mode/npm-init*" "npm init\n"))
 
-(defun emacsnpm-install ()
-  "Run the npm install command."
+(defun npm-mode/npm-install ()
+  "Run the 'npm install' command."
   (interactive)
-  (ansi-term (getenv "SHELL") "emacsnpm-install")
-  (comint-send-string "*emacsnpm-install*" "npm install\n"))
+  (ansi-term (getenv "SHELL") "npm-mode/npm-install")
+  (comint-send-string "*npm-mode/npm-install*" "npm install\n"))
 
-(defun emacsnpm-uninstall ()
-  "Run the npm uninstall command."
+(defun npm-mode/npm-install-save (dependency)
+  "Run the 'npm install --save' command."
+  (interactive "sEnter package name: ")
+  (message "Running npm install %s --save" dependency)
+  (ansi-term (getenv "SHELL") "npm-mode/npm-install-save")
+  (comint-send-string "*npm-mode/npm-install-save*" (format "npm install %s --save\n" dependency)))
+
+(defun npm-mode/npm-install-save-dev (dependency)
+  "Run the 'npm install --save-dev' command."
+  (interactive "sEnter package name: ")
+  (message "Running npm install %s --save-dev" dependency)
+  (ansi-term (getenv "SHELL") "npm-mode/npm-install-save-dev")
+  (comint-send-string "*npm-mode/npm-install-save-dev*" (format "npm install %s --save-dev\n" dependency)))
+
+(defun npm-mode/npm-uninstall ()
+  "Run the 'npm uninstall' command."
   (interactive)
   (let ((command
           (ido-completing-read
-            "Uninstall dependency: " (emacsnpm-get-dependencies))))
+            "Uninstall dependency: " (npm-mode/get-project-dependencies))))
     (message "Uninstalling: %s" command)
-    (switch-to-buffer "emacsnpm" command)
+    (switch-to-buffer npm-mode/buffer-name command)
     (erase-buffer)
-    (ansi-term (getenv "SHELL") "emacsnpm-uninstall")
-    (comint-send-string "*emacsnpm-uninstall*" (format "npm uninstall --save %s\n" command))))
+    (ansi-term (getenv "SHELL") "npm-mode/npm-uninstall")
+    (comint-send-string "*npm-mode/npm-uninstall*" (format "npm uninstall --save %s\n" command))))
   
-(defun emacsnpm-save (dependency)
-  "Install and save a DEPENDENCY."
-  (interactive "sEnter package name: ")
-  (message "Running npm install %s --save" dependency)
-  (ansi-term (getenv "SHELL") "emacsnpm-save")
-  (comint-send-string "*emacsnpm-save*" (format "npm install %s --save\n" dependency)))
+(defun npm-mode/npm-run ()
+  "Run the 'npm run' command on a project script."
+  (interactive)
+  (let ((command
+          (ido-completing-read
+            "Run command: " (npm-mode/get-project-scripts))))
+    (message "Running npm script: %s" command)
+    (switch-to-buffer npm-mode/buffer-name command)
+    (erase-buffer)
+    (ansi-term (getenv "SHELL") "npm-mode/npm-run")
+    (comint-send-string "*npm-mode/npm-run*" (format "npm run-script %s\n" command))))
+  
+(defun npm-mode/npm-run-debug ()
+  "Run the 'npm run' command on a project script under the node debugger."
+  (interactive)
+  (let ((command
+          (ido-completing-read
+            "Run command: " (npm-mode/get-project-scripts))))
+    (message "Debugging npm script: %s" command)
+    (switch-to-buffer npm-mode/buffer-name command)
+    (erase-buffer)
+    (ansi-term (getenv "SHELL") "npm-mode/npm-run-debug")
+    (comint-send-string "*npm-mode/npm-run*" (format "npm run-script %s\n" command))))
+  
+(defun npm-mode/visit-project-file ()
+  "Visit the project file."
+  (interactive)
+  (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
+  (if npm-mode/project-file
+    (find-file npm-mode/project-file)
+    (error npm-mode/no-project-file-found)))
 
-(defun emacsnpm-save-dev (dependency)
-  "Install and save a dev DEPENDENCY."
-  (interactive "sEnter package name: ")
-  (message "Running npm install %s --save-dev" dependency)
-  (ansi-term (getenv "SHELL") "emacsnpm-save-dev")
-  (comint-send-string "*emacsnpm-save-dev*" (format "npm install %s --save-dev\n" dependency)))
+(defun npm-mode/visit-project-dir ()
+  "Visit the project directory."
+  (interactive)
+  (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
+  (if npm-mode/project-file
+    (find-file npm-mode/project-file)
+    (error npm-mode/no-project-file-found)))
 
-(defgroup emacsnpm nil
-  "Customization group for `emacsnpm'."
+(defgroup npm-mode nil
+  "Customization group for `npm-mode'."
   :group 'convenience)
 
-(defcustom emacsnpm-keymap-prefix "C-c n"
-  "Prefix for `emacsnpm'."
-  :group 'emacsnpm)
+(defcustom npm-mode-keymap-prefix "C-c n"
+  "Prefix for `npm-mode'."
+  :group 'npm-mode)
 
-(defvar emacsnpm-command-map
+(defvar npm-mode-command-map
   (let ((map (make-sparse-keymap)))
-    (define-key map "n" 'emacsnpm-init)	         ; mnemonic 'new'
-    (define-key map "e" 'emacsnpm-open-package)	 ; mnemonic 'edit'
-    (define-key map "i" 'emacsnpm-install)       ; mnemonic 'install'
-    (define-key map "r" 'emacsnpm-exec)		 ; mnemonic 'run'
-    (define-key map "s" 'emacsnpm-save)		 ; mnemonic same as npm -S opt
-    (define-key map "d" 'emacsnpm-save-dev)	 ; mnemonic same as npm -D opt
-    (define-key map "u" 'emacsnpm-uninstall)	 ; mnemonic 'uninstall'
+    (define-key map "n" 'npm-mode/npm-init)
+    (define-key map "i" 'npm-mode/npm-install)
+    (define-key map "s" 'npm-mode/npm-install-save)
+    (define-key map "d" 'npm-mode/npm-install-save-dev)
+    (define-key map "u" 'npm-mode/npm-uninstall)
+    (define-key map "r" 'npm-mode/npm-run)
+    (define-key map "R" 'npm-mode/npm-run-debug)
+    (define-key map "v" 'npm-mode/visit-project-file)
+    (define-key map "V" 'npm-mode/visit-project-dir)
     map)
-  "Keymap for `emacsnpm' commands.")
+  "Keymap for `npm-mode' commands.")
 
-(defvar emacsnpm-mode-map
+(defvar npm-mode-map
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd emacsnpm-keymap-prefix) emacsnpm-command-map)
+    (define-key map (kbd npm-mode-keymap-prefix) npm-mode-command-map)
     map)
-  "Keymap for `emacsnpm'.")
+  "Keymap for `npm-mode'.")
 
 ;;;###autoload
-(define-minor-mode emacsnpm-mode
-  "Minor mode for integration with npm."
+(define-minor-mode npm-mode
+  "Minor mode for working with npm projects."
   nil
-  " npm"
-  emacsnpm-mode-map
-  :group 'docker)
+  " NPM"
+  npm-mode-map
+  :group 'npm-mode)
 
 ;;;###autoload
-(define-globalized-minor-mode emacsnpm-global-mode
-  emacsnpm-mode
-  emacsnpm-mode)
+(define-globalized-minor-mode npm-global-mode
+  npm-mode
+  npm-mode)
 
-(provide 'emacsnpm)
-;;; emacsnpm.el ends here
+(provide 'npm-mode)
+;;; npm-mode.el ends here
