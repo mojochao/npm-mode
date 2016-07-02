@@ -58,12 +58,12 @@ dependencies.
 
 ### npm-mode/npm-install-save
 
-Running <kbd>C-c n S</kbd> in a project directory will prompt for the name of a
+Running <kbd>C-c n s</kbd> in a project directory will prompt for the name of a
 package to install and will install it as a project dependency.
 
 ### npm-mode/npm-install-save-dev
 
-Running <kbd>C-c n D</kbd> in a project directory will prompt for the name of a
+Running <kbd>C-c n d</kbd> in a project directory will prompt for the name of a
 to install and will install it as a project dev dependency.
 
 ### npm-mode/npm-uninstall

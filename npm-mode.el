@@ -37,7 +37,6 @@
 ;; | npm-mode/npm-install-save-dev | <kbd>d</kbd> | install new project dev dependency   |
 ;; | npm-mode/npm-uninstall        | <kbd>u</kbd> | uninstall project dependency         |
 ;; | npm-mode/visit-project-file   | <kbd>v</kbd> | visit project file                   |
-;; | npm-mode/visit-project-dir    | <kbd>V</kbd> | visit project directory              |
 ;; | npm-mode/npm-run              | <kbd>r</kbd> | run project script                   |
 ;; | npm-mode/npm-run-debug        | <kbd>R</kbd> | run project script                   |
 ;; |                               | <kbd>?</kbd> | display keymap commands              |
