@@ -132,5 +132,44 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   (ansi-term (getenv "SHELL") "emacsnpm-save-dev")
   (comint-send-string "*emacsnpm-save-dev*" (format "npm install %s --save-dev\n" dependency)))
 
+(defgroup emacsnpm nil
+  "Customization group for `emacsnpm'."
+  :group 'convenience)
+
+(defcustom emacsnpm-keymap-prefix "C-c n"
+  "Prefix for `emacsnpm'."
+  :group 'emacsnpm)
+
+(defvar emacsnpm-command-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "n" 'emacsnpm-init)	         ; mnemonic 'new'
+    (define-key map "e" 'emacsnpm-open-package)	 ; mnemonic 'edit'
+    (define-key map "i" 'emacsnpm-install)       ; mnemonic 'install'
+    (define-key map "r" 'emacsnpm-exec)		 ; mnemonic 'run'
+    (define-key map "s" 'emacsnpm-save)		 ; mnemonic same as npm -S opt
+    (define-key map "d" 'emacsnpm-save-dev)	 ; mnemonic same as npm -D opt
+    (define-key map "u" 'emacsnpm-uninstall)	 ; mnemonic 'uninstall'
+    map)
+  "Keymap for `emacsnpm' commands.")
+
+(defvar emacsnpm-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd emacsnpm-keymap-prefix) emacsnpm-command-map)
+    map)
+  "Keymap for `emacsnpm'.")
+
+;;;###autoload
+(define-minor-mode emacsnpm-mode
+  "Minor mode for integration with npm."
+  nil
+  " npm"
+  emacsnpm-mode-map
+  :group 'docker)
+
+;;;###autoload
+(define-globalized-minor-mode emacsnpm-global-mode
+  emacsnpm-mode
+  emacsnpm-mode)
+
 (provide 'emacsnpm)
 ;;; emacsnpm.el ends here

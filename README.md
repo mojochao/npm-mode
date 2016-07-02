@@ -10,38 +10,64 @@ Add it to your Emacs' `load-path`:
 
 `(add-to-list load-path '/path/to/emacs-npm/')`
 
-# Usage
+Enable the mode globally:
 
-# Opening your `package.json`
+`(emacsnpm-global-mode)`
 
-From anywhere inside a directory which contains a `package.json` run the following command:
+## Commands
 
-#### `emacsnpm-open-package`
+### `emacsnpm-global-mode`
 
-# Running npm-init 
-From anywhere inside a directory in which you wish to initialise npm run the following command:
+Running <kbd>M-x emacsnpm-global-mode</kbd> creates keybindings to the
+various emacsnpm commands. The keymap prefix is `C-c n` by default and can be
+changed with <kbd>M-x customize-variable emacsnpm-keymap-prefix</kbd>.
 
-#### `emacsnpm-init`
+| command               | Keymap       | Description                  |
+|-----------------------|--------------|------------------------------|
+| emacsnpm-init         | <kbd>n</kbd> | Initialize new package.json  |
+| emacsnpm-open-package | <kbd>e</kbd> | Edit package.json            |
+| emacsnpm-install      | <kbd>i</kbd> | Install dependencies         |
+| emacsnpm-exec         | <kbd>r</kbd> | Run script                   |
+| emacsnpm-save         | <kbd>s</kbd> | Install dependency           |
+| emacsnpm-save-dev     | <kbd>d</kbd> | Install dev dependency       |
+| emacsnpm-uninstall    | <kbd>u</kbd> | Uninstall project package    |
+|                       | <kbd>?</kbd> | Display keymap commands      |
 
-This will open the `package.json` contained in your directory
+You can also call the commands directly.
 
-# Running npm commands
-From anywhere inside a directory that contains a `package.json` run the following command:
+### `emacsnpm-init`
 
-#### `emacsnpm-exec`
+Running <kbd>C-c n n</kbd> will create a new npm project in the current directory.
 
-This will provide you with a list of possible commands which are populated from the script object in the `package.json`.
+### `emacsnpm-open-package`
 
-# Saving npm dependencies
-From anywhere inside a directory that contains a `package.json` run the following command:
+Running <kbd>C-c n e</kbd> in an npm project directory will open the project 
+package.json file in a buffer for editing
+
+### `emacsnpm-install`
+
+Running <kbd>C-c n i</kbd> in an npm project directory will install the project
+dependencies.
+
+### `emacsnpm-exec`
+
+Running <kbd>C-c n r</kbd> in an npm project directory will prompt for the
+name of a script to run and will run it. Completion support is provided.
 
 #### `emacsnpm-save`
 
-This will run prompt you for the name of a package and run `npm install --save` for that package
+Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
+name of a package to install and install it as a project dependency.
 
 #### `emacsnpm-save-dev`
 
-This will run prompt you for the name of a package and run `npm install --save-dev` for that package
+Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
+name of a package to install and install it as a project dev dependency.
+
+#### `emacsnpm-uninstall`
+
+Running <kbd>C-c n s</kbd> in an npm project directory will prompt for the
+name of a package to uninstall and uninstall it as a project dependency.
 
 # TODO 
 
