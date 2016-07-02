@@ -33,7 +33,7 @@ It can also be activated globally with:
 ### npm-global-mode ###
 
 Running <kbd>M-x npm-global-mode</kbd> creates keybindings to the
-various npm-mode commands. The mode command prefix is `C-c n` by default and 
+various npm-mode commands. The mode command prefix is <bkd>C-c n</kbd> by default and 
 can be changed with <kbd>M-x customize-variable npm-mode-keymap-prefix</kbd>.
 
 | command                       | keymap       | description                    |
