@@ -1,5 +1,6 @@
 # npm-mode
 
+This repository provides an Emacs minor mode for working with [NPM](https://www.npmjs.com/) projects.
 ## Installation
 
 The recommended way to install npm-mode.el is through [MELPA](https://github.com/milkypostman/melpa).
@@ -84,3 +85,8 @@ in a buffer.
 
 Add npm-mode/npm-debug command that will run a project script under the node 
 debugger, and bind it to <kbd>C-c n d</kbd> in mode command keymap.
+
+## Acknowledgements
+
+This repo is a based on a fork of https://github.com/AlexChesters/emacs-npm, 
+and its history is preserved.  Many thanks to Alex for his creation.
