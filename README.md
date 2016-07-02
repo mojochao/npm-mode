@@ -1,6 +1,6 @@
 # npm-mode
 
-This repository provides an (Emacs)[https://www.gnu.org/software/emacs/] minor 
+This repository provides an [Emacs](https://www.gnu.org/software/emacs/) minor 
 mode for working with [NPM](https://www.npmjs.com/) projects.
 
 ## Installation
