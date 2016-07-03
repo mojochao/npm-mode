@@ -64,7 +64,7 @@
 
 (defun npm-mode/get-project-property (prop)
   "Get the given PROP from the current project file."
-  (setq npm-mode/project-file (npm-mode/npm-find-file npm-mode/project-file-name))
+  (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
   (unless npm-mode/project-file
     (error npm-mode/no-project-file-found))
   (let* ((json-object-type 'hash-table)
