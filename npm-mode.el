@@ -1,9 +1,10 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
-;; Author: Allen Gooch <allen.gooch@gmail.com>
-;; URL: https://github.com/mojochao/npm-mode
-;; Keywords: convenience, project, javascript, node, npm
 ;; Version: 0.1.0
+;; Author: Alex Chesters  <???>
+;;         Allen Gooch    <allen.gooch@gmail.com> (rewrite)
+;; Url: https://github.com/mojochao/npm-mode
+;; Keywords: project, javascript, node, npm
 ;; Package-Requires: ((emacs "24.4"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -36,9 +37,8 @@
 ;; | npm-mode/npm-install-save     | <kbd>s</kbd> | install new project dependency       |
 ;; | npm-mode/npm-install-save-dev | <kbd>d</kbd> | install new project dev dependency   |
 ;; | npm-mode/npm-uninstall        | <kbd>u</kbd> | uninstall project dependency         |
-;; | npm-mode/visit-project-file   | <kbd>v</kbd> | visit project file                   |
 ;; | npm-mode/npm-run              | <kbd>r</kbd> | run project script                   |
-;; | npm-mode/npm-run-debug        | <kbd>R</kbd> | run project script                   |
+;; | npm-mode/visit-project-file   | <kbd>v</kbd> | visit project file                   |
 ;; |                               | <kbd>?</kbd> | display keymap commands              |
 
 ;;; Credit:
@@ -64,7 +64,7 @@
 
 (defun npm-mode/get-project-property (prop)
   "Get the given PROP from the current project file."
-  (setq npm-mode/project-file (npm-mode/npm-find-file npm-mode/project-file-name))
+  (setq npm-mode/project-file (npm-mode/find-file npm-mode/project-file-name))
   (unless npm-mode/project-file
     (error npm-mode/no-project-file-found))
   (let* ((json-object-type 'hash-table)
@@ -187,11 +187,11 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Customization group for `npm-mode'."
   :group 'convenience)
 
-(defcustom npm-mode-keymap-prefix "C-c n"
+(defcustom npm-mode-command-prefix "C-c n"
   "Prefix for `npm-mode'."
   :group 'npm-mode)
 
-(defvar npm-mode-command-map
+(defvar npm-mode-command-keymap
   (let ((map (make-sparse-keymap)))
     (define-key map "n" 'npm-mode/npm-init)
     (define-key map "i" 'npm-mode/npm-install)
@@ -203,9 +203,9 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
     map)
   "Keymap for `npm-mode' commands.")
 
-(defvar npm-mode-map
+(defvar npm-mode-keymap
   (let ((map (make-sparse-keymap)))
-    (define-key map (kbd npm-mode-keymap-prefix) npm-mode-command-map)
+    (define-key map (kbd npm-mode-command-prefix) npm-mode-command-keymap)
     map)
   "Keymap for `npm-mode'.")
 
@@ -214,7 +214,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Minor mode for working with npm projects."
   nil
   " NPM"
-  npm-mode-map
+  npm-mode-keymap
   :group 'npm-mode)
 
 ;;;###autoload
