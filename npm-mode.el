@@ -5,7 +5,7 @@
 ;;         Allen Gooch    <allen.gooch@gmail.com> (refactor)
 ;; Url: https://github.com/mojochao/npm-mode
 ;; Keywords: project, javascript, node, npm
-;; Package-Requires: ((emacs "24.4"))
+;; Package-Requires: ((emacs "23.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
