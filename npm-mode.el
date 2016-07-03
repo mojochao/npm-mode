@@ -1,8 +1,8 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
-;; Version: 0.1.0
+;; Version: 0.4.0
 ;; Author: Alex Chesters  <???>
-;;         Allen Gooch    <allen.gooch@gmail.com> (rewrite)
+;;         Allen Gooch    <allen.gooch@gmail.com> (refactor)
 ;; Url: https://github.com/mojochao/npm-mode
 ;; Keywords: project, javascript, node, npm
 ;; Package-Requires: ((emacs "24.4"))
