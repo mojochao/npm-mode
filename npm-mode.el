@@ -136,7 +136,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Run the 'npm uninstall' command."
   (interactive)
   (let ((command
-          (ido-completing-read
+          (completing-read
             "Uninstall dependency: " (npm-mode--get-project-dependencies))))
     (message "Uninstalling: %s" command)
     (switch-to-buffer npm-mode--buffer-name command)
@@ -148,7 +148,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
   "Run the 'npm run' command on a project script."
   (interactive)
   (let ((command
-          (ido-completing-read
+          (completing-read
             "Run command: " (npm-mode--get-project-scripts))))
     (message "Running npm script: %s" command)
     (switch-to-buffer npm-mode--buffer-name command)
