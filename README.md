@@ -85,10 +85,10 @@ in a buffer.
 
 ## TODO
 
-Add npm-mode/npm-debug command that will run a project script under the node 
+Add npm-mode/npm-run-debug command that will run a project script under the node 
 debugger, and bind it to <kbd>C-c n d</kbd> in mode command keymap.
 
 ## Acknowledgements
 
-This repo is a based on a fork of https://github.com/AlexChesters/emacs-npm, 
-and its history is preserved.  Many thanks to Alex for his creation.
+This repo is a refactor of a fork of https://github.com/AlexChesters/emacs-npm, 
+and its history has been preserved.  Many thanks to Alex for his creation.
