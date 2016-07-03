@@ -106,25 +106,6 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
            (t (find-file-r (directory-file-name parent))))))) ; Continue
     (find-file-r (if starting-path starting-path default-directory))))
 
-(defun npm-mode/string-from-file (file)
-  "Return FILE's content as a string."
-  (with-temp-buffer
-    (insert-file-contents file)
-    (buffer-string)))
-
-(defun npm-mode/ordinary-insertion-filter (proc string)
-  "Given a PROC, a STRING is passed through which then has colors applied to it."
-  (when (buffer-live-p (process-buffer proc))
-    (with-current-buffer (process-buffer proc)
-      (let ((moving (= (point) (process-mark proc))))
-        (save-excursion
-          ;; Insert the text, advancing the process marker.
-          (goto-char (process-mark proc))
-          (insert string)
-          (ansi-color-apply-on-region (process-mark proc) (point))
-          (set-marker (process-mark proc) (point)))
-        (if moving (goto-char (process-mark proc)))))))
-
 (defun npm-mode/npm-init ()
   "Run the npm init command."
   (interactive)
