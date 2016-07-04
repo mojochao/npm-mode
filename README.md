@@ -14,12 +14,12 @@ and [MELPA](https://github.com/milkypostman/melpa).
 
 Start by cloning the package repository.
 
-`git clone https://github.com/mojochao/npm-mode.git /your/path/here`
+`$ git clone https://github.com/mojochao/npm-mode.git /your/path/here`
 
 Finish by loading the package in your emacs configuration.
 
 ```
-(add-to-list load-path '/your/path/here/npm-mode')
+(add-to-list 'load-path "/your/path/here/npm-mode")
 (require 'npm-mode)
 ```
 
