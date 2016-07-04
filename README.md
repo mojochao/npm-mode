@@ -12,12 +12,11 @@ and [MELPA](https://github.com/milkypostman/melpa).
 
 ### Manual Installation
 
-If not using the Emacs package manager, you can install manually be cloning
-the project source.
+Start by cloning the package repository.
 
 `git clone https://github.com/mojochao/npm-mode.git /your/path/here`
 
-In your emacs configuration, add the repo to the load path and load the library.
+Finish by loading the package in your emacs configuration.
 
 ```
 (add-to-list load-path '/your/path/here/npm-mode')
