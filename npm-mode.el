@@ -53,6 +53,12 @@
 (defvar npm-mode--project-file-name "package.json"
   "The name of npm project files.")
 
+(defvar npm-mode--buffer-name "*npm-mode*"
+  "Name of npm mode buffers.")
+
+(defvar npm-mode--modeline-name " npm"
+  "Name of npm mode modeline name.")
+
 (defun npm-mode--project-file ()
   "Returns the path to the project file if exists in directory or parent directory
 recursively, or signals a missing project file ."
@@ -60,9 +66,6 @@ recursively, or signals a missing project file ."
     (unless dir
       (error (concat "Error: cannot find " npm-mode--project-file-name)))
     (concat dir npm-mode--project-file-name)))
-
-(defvar npm-mode--buffer-name "*npm-mode*"
-  "Name of npm mode buffers.")
 
 (defun npm-mode--get-project-property (prop)
   "Get the given PROP from the current project file."
@@ -163,7 +166,7 @@ recursively, or signals a missing project file ."
 (define-minor-mode npm-mode
   "Minor mode for working with npm projects."
   nil
-  " NPM"
+  npm-mode--modeline-name
   npm-mode-keymap
   :group 'npm-mode)
 
