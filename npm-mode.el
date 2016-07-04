@@ -1,11 +1,11 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
-;; Version: 0.5.1
+;; Version: 0.5.2
 ;; Author: Alex Chesters  <???>
 ;;         Allen Gooch    <allen.gooch@gmail.com> (refactor)
 ;; Url: https://github.com/mojochao/npm-mode
 ;; Keywords: project, javascript, node, npm
-;; Package-Requires: ((emacs "23.1"))
+;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -53,25 +53,24 @@
 (defvar npm-mode--project-file-name "package.json"
   "The name of npm project files.")
 
-(defvar npm-mode--project-file nil
-  "The current project file.")
-
-(defvar npm-mode--no-project-file-found "error: no project file found"
-  "Error message for missing project file.")
+(defun npm-mode--project-file ()
+  "Returns the path to the project file if exists in directory or parent directory
+recursively, or signals a missing project file ."
+  (let ((dir (locate-dominating-file default-directory npm-mode--project-file-name)))
+    (unless dir
+      (error (concat "Error: cannot find " npm-mode--project-file-name)))
+    (concat dir npm-mode--project-file-name)))
 
 (defvar npm-mode--buffer-name "*npm-mode*"
   "Name of npm mode buffers.")
 
 (defun npm-mode--get-project-property (prop)
   "Get the given PROP from the current project file."
-  (setq npm-mode--project-file (npm-mode--find-file npm-mode--project-file-name))
-  (unless npm-mode--project-file
-    (error npm-mode--no-project-file-found))
-  (let* ((json-object-type 'hash-table)
-          (json-contents
-            (shell-command-to-string (concat "cat " npm-mode--project-file)))
-          (json-hash (json-read-from-string json-contents))
-          (commands (list)))
+  (let* ((project-file (npm-mode--project-file))
+	 (json-object-type 'hash-table)
+	 (json-contents (shell-command-to-string (concat "cat " project-file)))
+	 (json-hash (json-read-from-string json-contents))
+	 (commands (list)))
     (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash prop json-hash))
     commands))
 
@@ -82,29 +81,6 @@
 (defun npm-mode--get-project-dependencies ()
   "Get a list of project dependencies."
   (npm-mode--get-project-property "dependencies"))
-
-(defun npm-mode--find-file (file-to-find &optional starting-path)
-  "Recursively search parent directories for FILE-TO-FIND from STARTING-PATH.
-looking for a file with name file-to-find.  Returns the path to it
-or nil if not found.
-
-By default, it uses the `default-directory` as a starting point unless stated
-otherwise through the use of STARTING-PATH.
-
-This function is taken from
-http://www.emacswiki.org/emacs/EmacsTags#tags"
-  (cl-labels
-    ((find-file-r (path)
-       (let* ((parent (file-name-directory path))
-               (possible-file (concat parent file-to-find)))
-         (cond
-           ((file-exists-p possible-file) possible-file) ; Found
-           ;; The parent of ~ is nil and the parent of / is itself.
-           ;; Thus the terminating condition for not finding the file
-           ;; accounts for both.
-           ((or (null parent) (equal parent (directory-file-name parent))) nil) ; Not found
-           (t (find-file-r (directory-file-name parent))))))) ; Continue
-    (find-file-r (if starting-path starting-path default-directory))))
 
 (defun npm-mode-npm-init ()
   "Run the npm init command."
@@ -135,9 +111,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun npm-mode-npm-uninstall ()
   "Run the 'npm uninstall' command."
   (interactive)
-  (let ((command
-          (completing-read
-            "Uninstall dependency: " (npm-mode--get-project-dependencies))))
+  (let ((command (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
     (message "Uninstalling: %s" command)
     (switch-to-buffer npm-mode--buffer-name command)
     (erase-buffer)
@@ -147,9 +121,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun npm-mode-npm-run ()
   "Run the 'npm run' command on a project script."
   (interactive)
-  (let ((command
-          (completing-read
-            "Run command: " (npm-mode--get-project-scripts))))
+  (let ((command (completing-read"Run command: " (npm-mode--get-project-scripts))))
     (message "Running npm script: %s" command)
     (switch-to-buffer npm-mode--buffer-name command)
     (erase-buffer)
@@ -159,10 +131,7 @@ http://www.emacswiki.org/emacs/EmacsTags#tags"
 (defun npm-mode-visit-project-file ()
   "Visit the project file."
   (interactive)
-  (setq npm-mode--project-file (npm-mode--find-file npm-mode--project-file-name))
-  (if npm-mode--project-file
-    (find-file npm-mode--project-file)
-    (error npm-mode--no-project-file-found)))
+  (find-file (npm-mode--project-file)))
 
 (defgroup npm-mode nil
   "Customization group for `npm-mode'."
