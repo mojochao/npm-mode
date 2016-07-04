@@ -1,10 +1,9 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
 ;; Version: 0.5.2
-;; Author: Alex Chesters  <???>
-;;         Allen Gooch    <allen.gooch@gmail.com> (refactor)
+;; Author: Allen Gooch <allen.gooch@gmail.com>
 ;; Url: https://github.com/mojochao/npm-mode
-;; Keywords: project, javascript, node, npm
+;; Keywords: convenience, project, javascript, node, npm
 ;; Package-Requires: ((emacs "24.1"))
 
 ;; This file is NOT part of GNU Emacs.
@@ -43,8 +42,10 @@
 
 ;;; Credit:
 
-;; This package began as a fork of the https://github.com/AlexChesters/emacs-npm repo.
-;; Many thanks to Alex.
+;; This package began as a fork of the emacsnpm package, and its
+;; repository history has been preserved.  Many thanks to Alex
+;; for his contribution.
+;; https://github.com/AlexChesters/emacs-npm repo.
 
 ;;; Code:
 

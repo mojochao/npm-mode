@@ -5,9 +5,9 @@ mode for working with [NPM](https://www.npmjs.com/) projects.
 
 ## Installation
 
-### Emacs Package Manager
+### Package Manager
 
-The recommended way to install npm-mode.el is through the Emacs package manager 
+The recommended way to install npm-mode.el is through the package manager
 and [MELPA](https://github.com/milkypostman/melpa).
 
 ### Manual Installation
@@ -96,11 +96,6 @@ script to run and will run it. Completion support is provided.
 
 Running <kbd>C-c n v</kbd> in a project directory will visit the project file
 in a buffer.
-
-## TODO
-
-Add npm-mode-npm-run-debug command that will run a project script under the node 
-debugger, and bind it to <kbd>C-c n d</kbd> in mode command keymap.
 
 ## Acknowledgements
 
