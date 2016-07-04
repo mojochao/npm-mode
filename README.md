@@ -5,13 +5,19 @@ mode for working with [NPM](https://www.npmjs.com/) projects.
 
 ## Installation
 
-The recommended way to install npm-mode.el is through [MELPA](https://github.com/milkypostman/melpa).
+### Emacs Package Manager
 
-Otherwise, clone this repo:
+The recommended way to install npm-mode.el is through the Emacs package manager 
+and [MELPA](https://github.com/milkypostman/melpa).
+
+### Manual Installation
+
+If not using the Emacs package manager, you can install manually be cloning
+the project source.
 
 `git clone https://github.com/mojochao/npm-mode.git /your/path/here`
 
-In your emacs configuration, add the repo to the load path and require it:
+In your emacs configuration, add the repo to the load path and load the library.
 
 ```
 (add-to-list load-path '/your/path/here/npm-mode')
@@ -27,6 +33,15 @@ This package provides a minor mode which can be activated with:
 It can also be activated globally with:
 
 `(npm-global-mode)`
+
+You can automatically activate the mode for a project by adding the mode to 
+the `.dir-locals.el` file in the root directory of a project.
+
+```
+((nil . ((mode . npm))))
+```
+
+Now when you visit any file in the project, `npm-mode` will be activated.
 
 ## Commands
 
