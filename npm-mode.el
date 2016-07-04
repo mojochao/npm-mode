@@ -1,6 +1,6 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
-;; Version: 0.5.2
+;; Version: 0.5.3
 ;; Author: Allen Gooch <allen.gooch@gmail.com>
 ;; Url: https://github.com/mojochao/npm-mode
 ;; Keywords: convenience, project, javascript, node, npm
@@ -86,51 +86,45 @@ recursively, or signals a missing project file ."
   "Get a list of project dependencies."
   (npm-mode--get-project-property "dependencies"))
 
+(defun npm-mode--exec-process (process cmd)
+  "Run the CMD in PROCESS."
+  (let ((name (concat "*" process "*"))
+	(cmd-line (concat cmd "\n" )))
+    (message (concat "Running " cmd-line))
+    (ansi-term (getenv "SHELL") process)
+    (comint-send-string name cmd-line)))
+
 (defun npm-mode-npm-init ()
   "Run the npm init command."
   (interactive)
-  (ansi-term (getenv "SHELL") "npm-mode-npm-init")
-  (comint-send-string "*npm-mode-npm-init*" "npm init\n"))
+  (npm-mode--exec-process "npm-init" "npm init"))
 
 (defun npm-mode-npm-install ()
   "Run the 'npm install' command."
   (interactive)
-  (ansi-term (getenv "SHELL") "npm-mode-npm-install")
-  (comint-send-string "*npm-mode-npm-install*" "npm install\n"))
+  (npm-mode--exec-process "npm-install" "npm install"))
 
-(defun npm-mode-npm-install-save (dependency)
-  "Run the 'npm install --save' command."
+(defun npm-mode-npm-install-save (dep)
+  "Run the 'npm install --save' command for DEP."
   (interactive "sEnter package name: ")
-  (message "Running npm install %s --save" dependency)
-  (ansi-term (getenv "SHELL") "npm-mode-npm-install-save")
-  (comint-send-string "*npm-mode-npm-install-save*" (format "npm install %s --save\n" dependency)))
+  (npm-mode--exec-process "npm-install-save" (format "npm install %s --save" dep)))
 
-(defun npm-mode-npm-install-save-dev (dependency)
-  "Run the 'npm install --save-dev' command."
+(defun npm-mode-npm-install-save-dev (dep)
+  "Run the 'npm install --save-dev' command for DEP."
   (interactive "sEnter package name: ")
-  (message "Running npm install %s --save-dev" dependency)
-  (ansi-term (getenv "SHELL") "npm-mode-npm-install-save-dev")
-  (comint-send-string "*npm-mode-npm-install-save-dev*" (format "npm install %s --save-dev\n" dependency)))
+  (npm-mode--exec-process "npm-install-save" (format "npm install %s --save-dev" dep)))
 
 (defun npm-mode-npm-uninstall ()
   "Run the 'npm uninstall' command."
   (interactive)
-  (let ((command (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
-    (message "Uninstalling: %s" command)
-    (switch-to-buffer npm-mode--buffer-name command)
-    (erase-buffer)
-    (ansi-term (getenv "SHELL") "npm-mode-npm-uninstall")
-    (comint-send-string "*npm-mode-npm-uninstall*" (format "npm uninstall --save %s\n" command))))
+  (let ((dep (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
+    (npm-mode--exec-process "npm-uninstall" (format "npm uninstall %s" dep))))
   
 (defun npm-mode-npm-run ()
   "Run the 'npm run' command on a project script."
   (interactive)
-  (let ((command (completing-read"Run command: " (npm-mode--get-project-scripts))))
-    (message "Running npm script: %s" command)
-    (switch-to-buffer npm-mode--buffer-name command)
-    (erase-buffer)
-    (ansi-term (getenv "SHELL") "npm-mode-npm-run")
-    (comint-send-string "*npm-mode-npm-run*" (format "npm run-script %s\n" command))))
+  (let ((script (completing-read "Run script: " (npm-mode--get-project-scripts))))
+    (npm-mode--exec-process "npm-run" (format "npm run %s" script))))
   
 (defun npm-mode-visit-project-file ()
   "Visit the project file."
