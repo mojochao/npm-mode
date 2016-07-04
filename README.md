@@ -51,16 +51,16 @@ Running <kbd>M-x npm-global-mode</kbd> creates keybindings to the
 various npm-mode commands. The mode command prefix is <kbd>C-c n</kbd> by default and 
 can be changed with <kbd>M-x customize-variable npm-mode-keymap-prefix</kbd>.
 
-| command                       | keymap       | description                    |
-|-------------------------------|--------------|--------------------------------|
-| npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project         |
-| npm-mode-npm-install          | <kbd>i</kbd> | Install project dependencies   |
-| npm-mode-npm-install-save     | <kbd>s</kbd> | Install new dependency         |
-| npm-mode-npm-install-save-dev | <kbd>d</kbd> | Install new dev dependency     |
-| npm-mode-npm-uninstall        | <kbd>u</kbd> | Uninstall project dependency   |
-| npm-mode-npm-run              | <kbd>r</kbd> | Run project script             |
-| npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project file             |
-|                               | <kbd>?</kbd> | Display keymap commands        |
+| command                       | keymap       | description                      |
+|-------------------------------|--------------|----------------------------------|
+| npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project           |
+| npm-mode-npm-install          | <kbd>i</kbd> | Install all project dependencies |
+| npm-mode-npm-install-save     | <kbd>s</kbd> | Add new project dependency       |
+| npm-mode-npm-install-save-dev | <kbd>d</kbd> | Add new project dev dependency   |
+| npm-mode-npm-uninstall        | <kbd>u</kbd> | Remove project dependency        |
+| npm-mode-npm-run              | <kbd>r</kbd> | Run project script               |
+| npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file  |
+|                               | <kbd>?</kbd> | Display keymap commands          |
 
 You can also call the commands directly.
 
