@@ -43,14 +43,16 @@ The mode can be activated on a per-project basis using directory local
 variables. The easiest way to do this is to use the
 `add-dir-local-variable` from the root directory of a project.
 
-For example, if you visit the `README.md` file in the root directory
-of a project, and run the <kbd>M-x add-dir-local-variable</kbd><kbd>
-command, Emacs will prompt you for `Mode or subdirectory (default
-markdown mode): `, to which you should enter <kbd>nil</kbd>. Next, you
-will be prompted for `Add directory-local variable: `, to which you
-should enter <kbd>mode</kbd>.  Finally, you will be prompted for `Add
-mode with value (default markdown mode): `, to which you should enter
-<kbd>npm-mode</kbd>.
+For example, visit the `README.md` file in the root directory
+of a project, and run the <kbd>M-x add-dir-local-variable</kbd>
+command. Emacs will prompt you for `Mode or subdirectory:`, to which
+you should enter <kbd>nil</kbd>. 
+
+Next, you will be prompted for `Add
+directory-local variable:`, to which you should enter <kbd>mode</kbd>.
+
+Finally, you will be prompted for `Add mode with value:`, to which you
+should enter <kbd>npm-mode</kbd>.
 
 > Note that the defaults were markdown-mode because we invoked the 
 > command while visiting a markdown file. Defaults will use the
