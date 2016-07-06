@@ -29,26 +29,59 @@ This package provides a minor mode which can be activated with:
 
 `(npm-mode)`
 
-It can also be activated globally with:
+Once activated the minor mode ke
+
+## Global Activation
+
+The minor mode can be activated globally with:
 
 `(npm-global-mode)`
 
-You can automatically activate the mode for a project by adding the mode to 
-the `.dir-locals.el` file in the root directory of a project.
+### Project Activation
+
+The mode can be activated on a per-project basis using directory local
+variables. The easiest way to do this is to use the
+`add-dir-local-variable` from the root directory of a project.
+
+For example, if you visit the `README.md` file in the root directory
+of a project, and run the <kbd>M-x add-dir-local-variable</kbd><kbd>
+command, Emacs will prompt you for `Mode or subdirectory (default
+markdown mode): `, to which you should enter <kbd>nil</kbd>. Next, you
+will be prompted for `Add directory-local variable: `, to which you
+should enter <kbd>mode</kbd>.  Finally, you will be prompted for `Add
+mode with value (default markdown mode): `, to which you should enter
+<kbd>npm-mode</kbd>.
+
+> Note that the defaults were markdown-mode because we invoked the 
+> command while visiting a markdown file. Defaults will use the
+> major mode of the buffer when invoking the command.
+
+If you look at the generated `.dir-locals.el` file you can see the 
+generated configuration:
 
 ```
-((nil . ((mode . npm))))
+$ cat /your/project/root/.dir-locals.el
+;;; Directory Local Variables
+;;; For more information see (info "(emacs) Directory Variables")
+
+((nil
+  (mode . npm)))
+$
 ```
 
-Now when you visit any file in the project, `npm-mode` will be activated.
+If you later wish to disable npm-mode for the project, run the 
+`delete-dir-local-variable` command similarly.
 
-## Commands
+## Command Keymap
 
-### npm-global-mode ###
+This mode provides a command keymap, whose default <kbd>C-c n</kbd>
+prefix can be changed with <kbd>M-x customize-variable
+npm-mode-keymap-prefix</kbd>.
 
-Running <kbd>M-x npm-global-mode</kbd> creates keybindings to the
-various npm-mode commands. The mode command prefix is <kbd>C-c n</kbd> by default and 
-can be changed with <kbd>M-x customize-variable npm-mode-keymap-prefix</kbd>.
+## Usage
+
+Once the mode has been activated, you can use its commands.  Invoking
+<kbd>C-c n</kbd> provides access to the following commands. 
 
 | command                       | keymap       | description                      |
 |-------------------------------|--------------|----------------------------------|
@@ -60,8 +93,6 @@ can be changed with <kbd>M-x customize-variable npm-mode-keymap-prefix</kbd>.
 | npm-mode-npm-run              | <kbd>r</kbd> | Run project script               |
 | npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file  |
 |                               | <kbd>?</kbd> | Display keymap commands          |
-
-You can also call the commands directly.
 
 ### npm-mode-npm-init
 
@@ -99,5 +130,5 @@ in a buffer.
 
 ## Acknowledgements
 
-This repo is a refactor of a fork of https://github.com/AlexChesters/emacs-npm, 
+This repo is a rewrite of a fork of https://github.com/AlexChesters/emacs-npm, 
 and its history has been preserved.  Many thanks to Alex for his creation.
