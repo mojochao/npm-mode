@@ -7,8 +7,8 @@ minor mode for working with [NPM](https://www.npmjs.com/) projects.
 
 ### Package Manager
 
-The recommended way to install *npm-mode* is through the package manager
-and [MELPA](https://github.com/milkypostman/melpa).
+The recommended way to install *npm-mode* is through the package
+manager and [MELPA](https://github.com/milkypostman/melpa).
 
 ### Manual Installation
 
@@ -25,7 +25,8 @@ Finish by loading the *npm-mode* package in your emacs configuration:
 
 ## Configuration
 
-The *npm-mode* package provides a minor mode which can be activated with:
+The *npm-mode* package provides a minor mode which can be activated
+with:
 
 `(npm-mode)`
 
@@ -38,22 +39,23 @@ The mode can be activated globally with:
 ### Project Activation
 
 The mode can be activated on a per-project basis using directory local
-variables. The easiest way to do this is to use the command
-`add-dir-local-variable` from the root directory of a project.
+variables by running `add-dir-local-variable` from the root directory
+of a project.
 
 For example, visit the `README.md` file in the root directory of a
-project, and run the command <kbd>M-x add-dir-local-variable</kbd>.
-Emacs will prompt you for `Mode or subdirectory:`, to which you should
-enter <kbd>nil</kbd>.
+project, and run <kbd>M-x add-dir-local-variable</kbd>.  Emacs will
+prompt you for `Mode or subdirectory:`, to which you should enter
+`nil`.
 
-Next, you will be prompted for `Add directory-local variable:`, to which 
-you should enter <kbd>mode</kbd>.
+Next, you will be prompted for `Add directory-local variable:`, to
+which you should enter `mode`.
 
 Next, you will be prompted for `Add mode with value:`, to which you
-should enter <kbd>npm-mode</kbd>.
+should enter `npm-mode`.
 
-Next, you will be placed in a new `.dir-locals.el` buffer containing the
-directory local variables for the project.
+Next, you will be placed in a new `.dir-locals.el` buffer containing
+the directory local variables for the project, including the added
+`npm-mode` configuration.
 
 ```
 ;;; Directory Local Variables
@@ -66,10 +68,10 @@ directory local variables for the project.
 Finally, save the buffer contents with <kbd>C-x C-s</kbd>, and your
 project is configured for `npm-mode`.
 
-If you later wish to disable npm-mode for the project, run the 
-`delete-dir-local-variable` command similarly.
+Now when you visit any file under the project directory, *npm-mode*
+will be activated and its commands made available.
 
-### Command Keymap
+### Command Keymap Prefix
 
 The mode provides a command keymap, whose default <kbd>C-c n</kbd>
 prefix can be configured with <kbd>M-x customize-variable
@@ -77,8 +79,10 @@ npm-mode-keymap-prefix</kbd>.
 
 ## Usage
 
-Once the mode has been activated, you can use its commands.  Invoking
-<kbd>C-c n</kbd> provides access to the following commands. 
+### Command Keymap
+
+Once *npm-mode* has been activated, its commands are accessed by the
+<kbd>C-c n</kbd> command prefix:
 
 | command                       | keymap       | description                      |
 |-------------------------------|--------------|----------------------------------|

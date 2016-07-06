@@ -25,7 +25,7 @@
 
 ;;; Commentary:
 
-;; This package allows you to easily work with npm projects. It provides
+;; This package allows you to easily work with npm projects.  It provides
 ;; a minor mode for convenient interactive use of API with a
 ;; mode-specific command keymap.
 ;;
@@ -61,8 +61,10 @@
   "Name of npm mode modeline name.")
 
 (defun npm-mode--project-file ()
-  "Returns the path to the project file if exists in directory or parent directory
-recursively, or signals a missing project file ."
+  "Return path to the project file, or nil.
+If project file exists in the current working directory, or a
+parent directory recursively, return its path.  Otherwise, return
+nil."
   (let ((dir (locate-dominating-file default-directory npm-mode--project-file-name)))
     (unless dir
       (error (concat "Error: cannot find " npm-mode--project-file-name)))
@@ -87,7 +89,7 @@ recursively, or signals a missing project file ."
   (npm-mode--get-project-property "dependencies"))
 
 (defun npm-mode--exec-process (process cmd)
-  "Run the CMD in PROCESS."
+  "Execute a PROCESS running CMD."
   (let ((name (concat "*" process "*"))
 	(cmd-line (concat cmd "\n" )))
     (message (concat "Running " cmd-line))
@@ -132,11 +134,11 @@ recursively, or signals a missing project file ."
   (find-file (npm-mode--project-file)))
 
 (defgroup npm-mode nil
-  "Customization group for `npm-mode'."
+  "Customization group for npm-mode."
   :group 'convenience)
 
 (defcustom npm-mode-command-prefix "C-c n"
-  "Prefix for `npm-mode'."
+  "Prefix for npm-mode."
   :group 'npm-mode)
 
 (defvar npm-mode-command-keymap
@@ -149,7 +151,7 @@ recursively, or signals a missing project file ."
     (define-key map "r" 'npm-mode-npm-run)
     (define-key map "v" 'npm-mode-visit-project-file)
     map)
-  "Keymap for `npm-mode' commands.")
+  "Keymap for npm-mode commands.")
 
 (defvar npm-mode-keymap
   (let ((map (make-sparse-keymap)))
