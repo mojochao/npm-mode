@@ -1,22 +1,22 @@
 # npm-mode
 
-This repository provides an [Emacs](https://www.gnu.org/software/emacs/) minor 
-mode for working with [NPM](https://www.npmjs.com/) projects.
+This is *npm-mode*, an [Emacs](https://www.gnu.org/software/emacs/)
+minor mode for working with [NPM](https://www.npmjs.com/) projects.
 
 ## Installation
 
 ### Package Manager
 
-The recommended way to install npm-mode.el is through the package manager
+The recommended way to install *npm-mode* is through the package manager
 and [MELPA](https://github.com/milkypostman/melpa).
 
 ### Manual Installation
 
-Start by cloning the package repository.
+Start by cloning the *npm-mode* package repository:
 
 `$ git clone https://github.com/mojochao/npm-mode.git /your/path/here`
 
-Finish by loading the package in your emacs configuration.
+Finish by loading the *npm-mode* package in your emacs configuration:
 
 ```
 (add-to-list 'load-path "/your/path/here/npm-mode")
@@ -25,52 +25,53 @@ Finish by loading the package in your emacs configuration.
 
 ## Configuration
 
-This package provides a minor mode which can be activated with:
+The *npm-mode* package provides a minor mode which can be activated with:
 
 `(npm-mode)`
 
 ### Global Activation
 
-The minor mode can be activated globally with:
+The mode can be activated globally with:
 
 `(npm-global-mode)`
 
 ### Project Activation
 
 The mode can be activated on a per-project basis using directory local
-variables. The easiest way to do this is to use the
+variables. The easiest way to do this is to use the command
 `add-dir-local-variable` from the root directory of a project.
 
-For example, visit the `README.md` file in the root directory
-of a project, and run the <kbd>M-x add-dir-local-variable</kbd>
-command. Emacs will prompt you for `Mode or subdirectory:`, to which
-you should enter <kbd>nil</kbd>. 
+For example, visit the `README.md` file in the root directory of a
+project, and run the command <kbd>M-x add-dir-local-variable</kbd>.
+Emacs will prompt you for `Mode or subdirectory:`, to which you should
+enter <kbd>nil</kbd>.
 
-Next, you will be prompted for `Add
-directory-local variable:`, to which you should enter <kbd>mode</kbd>.
+Next, you will be prompted for `Add directory-local variable:`, to which 
+you should enter <kbd>mode</kbd>.
 
-Finally, you will be prompted for `Add mode with value:`, to which you
+Next, you will be prompted for `Add mode with value:`, to which you
 should enter <kbd>npm-mode</kbd>.
 
-If you look at the generated `.dir-locals.el` file you can see the 
-generated configuration:
+Next, you will be placed in a new `.dir-locals.el` buffer containing the
+directory local variables for the project.
 
 ```
-$ cat /your/project/root/.dir-locals.el
 ;;; Directory Local Variables
 ;;; For more information see (info "(emacs) Directory Variables")
 
 ((nil
   (mode . npm)))
-$
 ```
+
+Finally, save the buffer contents with <kbd>C-x C-s</kbd>, and your
+project is configured for `npm-mode`.
 
 If you later wish to disable npm-mode for the project, run the 
 `delete-dir-local-variable` command similarly.
 
 ### Command Keymap
 
-This mode provides a command keymap, whose default <kbd>C-c n</kbd>
+The mode provides a command keymap, whose default <kbd>C-c n</kbd>
 prefix can be configured with <kbd>M-x customize-variable
 npm-mode-keymap-prefix</kbd>.
 
