@@ -1,6 +1,6 @@
 ;;; npm-mode.el --- minor mode for working with npm projects
 
-;; Version: 0.5.3
+;; Version: 0.6.0
 ;; Author: Allen Gooch <allen.gooch@gmail.com>
 ;; Url: https://github.com/mojochao/npm-mode
 ;; Keywords: convenience, project, javascript, node, npm
@@ -29,16 +29,17 @@
 ;; a minor mode for convenient interactive use of API with a
 ;; mode-specific command keymap.
 ;;
-;; | command                       | keymap       | description                      |
-;; |-------------------------------|--------------|----------------------------------|
-;; | npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project           |
-;; | npm-mode-npm-install          | <kbd>i</kbd> | Install all project dependencies |
-;; | npm-mode-npm-install-save     | <kbd>s</kbd> | Add new project dependency       |
-;; | npm-mode-npm-install-save-dev | <kbd>d</kbd> | Add new project dev dependency   |
-;; | npm-mode-npm-uninstall        | <kbd>u</kbd> | Remove project dependency        |
-;; | npm-mode-npm-run              | <kbd>r</kbd> | Run project script               |
-;; | npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file  |
-;; |                               | <kbd>?</kbd> | Display keymap commands          |
+;; | command                       | keymap       | description                         |
+;; |-------------------------------|--------------|-------------------------------------|
+;; | npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project              |
+;; | npm-mode-npm-install          | <kbd>i</kbd> | Install all project dependencies    |
+;; | npm-mode-npm-install-save     | <kbd>s</kbd> | Add new project dependency          |
+;; | npm-mode-npm-install-save-dev | <kbd>d</kbd> | Add new project dev dependency      |
+;; | npm-mode-npm-uninstall        | <kbd>u</kbd> | Remove project dependency           |
+;; | npm-mode-npm-list             | <kbd>l</kbd> | List installed project dependencies |
+;; | npm-mode-npm-run              | <kbd>r</kbd> | Run project script                  |
+;; | npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file     |
+;; |                               | <kbd>?</kbd> | Display keymap commands             |
 
 ;;; Credit:
 
@@ -73,10 +74,10 @@ nil."
 (defun npm-mode--get-project-property (prop)
   "Get the given PROP from the current project file."
   (let* ((project-file (npm-mode--project-file))
-	 (json-object-type 'hash-table)
-	 (json-contents (shell-command-to-string (concat "cat " project-file)))
-	 (json-hash (json-read-from-string json-contents))
-	 (commands (list)))
+         (json-object-type 'hash-table)
+         (json-contents (shell-command-to-string (concat "cat " project-file)))
+         (json-hash (json-read-from-string json-contents))
+         (commands (list)))
     (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash prop json-hash))
     commands))
 
@@ -91,7 +92,7 @@ nil."
 (defun npm-mode--exec-process (process cmd)
   "Execute a PROCESS running CMD."
   (let ((name (concat "*" process "*"))
-	(cmd-line (concat cmd "\n" )))
+        (cmd-line (concat cmd "\n" )))
     (message (concat "Running " cmd-line))
     (ansi-term (getenv "SHELL") process)
     (comint-send-string name cmd-line)))
@@ -122,6 +123,11 @@ nil."
   (let ((dep (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
     (npm-mode--exec-process "npm-uninstall" (format "npm uninstall %s" dep))))
   
+(defun npm-mode-npm-list ()
+  "Run the 'npm list' command."
+  (interactive)
+  (npm-mode--exec-process "npm-list" "npm list --depth=0"))
+
 (defun npm-mode-npm-run ()
   "Run the 'npm run' command on a project script."
   (interactive)
@@ -148,6 +154,7 @@ nil."
     (define-key map "s" 'npm-mode-npm-install-save)
     (define-key map "d" 'npm-mode-npm-install-save-dev)
     (define-key map "u" 'npm-mode-npm-uninstall)
+    (define-key map "l" 'npm-mode-npm-list)
     (define-key map "r" 'npm-mode-npm-run)
     (define-key map "v" 'npm-mode-visit-project-file)
     map)

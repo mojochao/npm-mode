@@ -84,16 +84,17 @@ npm-mode-keymap-prefix</kbd>.
 Once *npm-mode* has been activated, its commands are accessed by the
 <kbd>C-c n</kbd> command prefix:
 
-| command                       | keymap       | description                      |
-|-------------------------------|--------------|----------------------------------|
-| npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project           |
-| npm-mode-npm-install          | <kbd>i</kbd> | Install all project dependencies |
-| npm-mode-npm-install-save     | <kbd>s</kbd> | Add new project dependency       |
-| npm-mode-npm-install-save-dev | <kbd>d</kbd> | Add new project dev dependency   |
-| npm-mode-npm-uninstall        | <kbd>u</kbd> | Remove project dependency        |
-| npm-mode-npm-run              | <kbd>r</kbd> | Run project script               |
-| npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file  |
-|                               | <kbd>?</kbd> | Display keymap commands          |
+| command                       | keymap       | description                         |
+|-------------------------------|--------------|-------------------------------------|
+| npm-mode-npm-init             | <kbd>n</kbd> | Initialize new project              |
+| npm-mode-npm-install          | <kbd>i</kbd> | Install all project dependencies    |
+| npm-mode-npm-install-save     | <kbd>s</kbd> | Add new project dependency          |
+| npm-mode-npm-install-save-dev | <kbd>d</kbd> | Add new project dev dependency      |
+| npm-mode-npm-uninstall        | <kbd>u</kbd> | Remove project dependency           |
+| npm-mode-npm-list             | <kbd>l</kbd> | List installed project dependencies |
+| npm-mode-npm-run              | <kbd>r</kbd> | Run project script                  |
+| npm-mode-visit-project-file   | <kbd>v</kbd> | Visit project package.json file     |
+|                               | <kbd>?</kbd> | Display keymap commands             |
 
 ### npm-mode-npm-init
 
@@ -118,6 +119,10 @@ to install and will install it as a project dev dependency.
 
 Running <kbd>C-c n u</kbd> in a project directory will prompt for the name of a
 package to uninstall and will uninstall it and remove it from project dependencies.
+
+### npm-mode-npm-list
+
+Running <kbd>C-c n l</kbd> in a project directory will list the project.
 
 ### npm-mode-npm-run
 

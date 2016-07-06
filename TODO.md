@@ -19,3 +19,9 @@ up the buffer to the npm command's i/o streams. When the command ends,
 we could then just display a status message and a `Press q to quit...`
 message. When the user hits <kbd>q</kbd> the buffer would then be
 killed leaving the user in the buffer they started in.
+
+### Add ability to specialize command invocation in keymap.
+
+Some commands, like `npm install --depth=0`, provide options to alter
+the behavior of the command being run.  Investigate how to use
+magit-popups to provide more flexible command execution.
