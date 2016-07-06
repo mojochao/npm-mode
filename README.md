@@ -31,7 +31,7 @@ This package provides a minor mode which can be activated with:
 
 Once activated the minor mode ke
 
-## Global Activation
+### Global Activation
 
 The minor mode can be activated globally with:
 
@@ -72,10 +72,10 @@ $
 If you later wish to disable npm-mode for the project, run the 
 `delete-dir-local-variable` command similarly.
 
-## Command Keymap
+### Command Keymap
 
 This mode provides a command keymap, whose default <kbd>C-c n</kbd>
-prefix can be changed with <kbd>M-x customize-variable
+prefix can be configured with <kbd>M-x customize-variable
 npm-mode-keymap-prefix</kbd>.
 
 ## Usage
@@ -131,4 +131,4 @@ in a buffer.
 ## Acknowledgements
 
 This repo is a rewrite of a fork of https://github.com/AlexChesters/emacs-npm, 
-and its history has been preserved.  Many thanks to Alex for his creation.
+and its history has been preserved.  Many thanks to Alex for his contribution.
