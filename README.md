@@ -29,8 +29,6 @@ This package provides a minor mode which can be activated with:
 
 `(npm-mode)`
 
-Once activated the minor mode ke
-
 ### Global Activation
 
 The minor mode can be activated globally with:
@@ -53,10 +51,6 @@ directory-local variable:`, to which you should enter <kbd>mode</kbd>.
 
 Finally, you will be prompted for `Add mode with value:`, to which you
 should enter <kbd>npm-mode</kbd>.
-
-> Note that the defaults were markdown-mode because we invoked the 
-> command while visiting a markdown file. Defaults will use the
-> major mode of the buffer when invoking the command.
 
 If you look at the generated `.dir-locals.el` file you can see the 
 generated configuration:
