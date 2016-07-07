@@ -20,15 +20,14 @@ we could then just display a status message and a `Press q to quit...`
 message. When the user hits <kbd>q</kbd> the buffer would then be
 killed leaving the user in the buffer they started in.
 
-<<<<<<< 84b35211cba4f2d5f03b8dc2b60ae4b03d90bf8a
 ### Add ability to specialize command invocation in keymap.
 
 Some commands, like `npm install --depth=0`, provide options to alter
 the behavior of the command being run.  Investigate how to use
 magit-popups to provide more flexible command execution.
-=======
+
 ### Add completing read support for installing packages
 
 It would be great if we could do completing read on packages to
-install that would list NPM packages available for install.
->>>>>>> Add todo item.
+install that would list NPM packages available for install, much
+like the Emacs package manager does with `package-install` command.
