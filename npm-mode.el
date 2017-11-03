@@ -55,9 +55,6 @@
 (defvar npm-mode--project-file-name "package.json"
   "The name of npm project files.")
 
-(defvar npm-mode--buffer-name "*npm-mode*"
-  "Name of npm mode buffers.")
-
 (defvar npm-mode--modeline-name " npm"
   "Name of npm mode modeline name.")
 
@@ -89,51 +86,48 @@ nil."
   "Get a list of project dependencies."
   (npm-mode--get-project-property "dependencies"))
 
-(defun npm-mode--exec-process (process cmd)
-  "Execute a PROCESS running CMD."
-  (let ((name (concat "*" process "*"))
-        (cmd-line (concat cmd "\n" )))
-    (message (concat "Running " cmd-line))
-    (ansi-term (getenv "SHELL") process)
-    (comint-send-string name cmd-line)))
+(defun npm-mode--exec-process (cmd)
+  "Execute a process running CMD."
+  (message (concat "Running " cmd))
+  (compile cmd))
 
 (defun npm-mode-npm-init ()
   "Run the npm init command."
   (interactive)
-  (npm-mode--exec-process "npm-init" "npm init"))
+  (npm-mode--exec-process "npm init"))
 
 (defun npm-mode-npm-install ()
   "Run the 'npm install' command."
   (interactive)
-  (npm-mode--exec-process "npm-install" "npm install"))
+  (npm-mode--exec-process "npm install"))
 
 (defun npm-mode-npm-install-save (dep)
   "Run the 'npm install --save' command for DEP."
   (interactive "sEnter package name: ")
-  (npm-mode--exec-process "npm-install-save" (format "npm install %s --save" dep)))
+  (npm-mode--exec-process (format "npm install %s --save" dep)))
 
 (defun npm-mode-npm-install-save-dev (dep)
   "Run the 'npm install --save-dev' command for DEP."
   (interactive "sEnter package name: ")
-  (npm-mode--exec-process "npm-install-save" (format "npm install %s --save-dev" dep)))
+  (npm-mode--exec-process (format "npm install %s --save-dev" dep)))
 
 (defun npm-mode-npm-uninstall ()
   "Run the 'npm uninstall' command."
   (interactive)
   (let ((dep (completing-read "Uninstall dependency: " (npm-mode--get-project-dependencies))))
-    (npm-mode--exec-process "npm-uninstall" (format "npm uninstall %s" dep))))
-  
+    (npm-mode--exec-process (format "npm uninstall %s" dep))))
+
 (defun npm-mode-npm-list ()
   "Run the 'npm list' command."
   (interactive)
-  (npm-mode--exec-process "npm-list" "npm list --depth=0"))
+  (npm-mode--exec-process "npm list --depth=0"))
 
 (defun npm-mode-npm-run ()
   "Run the 'npm run' command on a project script."
   (interactive)
   (let ((script (completing-read "Run script: " (npm-mode--get-project-scripts))))
-    (npm-mode--exec-process "npm-run" (format "npm run %s" script))))
-  
+    (npm-mode--exec-process (format "npm run %s" script))))
+
 (defun npm-mode-visit-project-file ()
   "Visit the project file."
   (interactive)
