@@ -72,7 +72,9 @@ nil."
   "Get the given PROP from the current project file."
   (let* ((project-file (npm-mode--project-file))
          (json-object-type 'hash-table)
-         (json-contents (shell-command-to-string (concat "cat " project-file)))
+         (json-contents (with-temp-buffer
+                          (insert-file-contents project-file)
+                          (buffer-string)))
          (json-hash (json-read-from-string json-contents))
          (commands (list)))
     (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash prop json-hash))
