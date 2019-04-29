@@ -91,7 +91,7 @@ nil."
 (defun npm-mode--exec-process (cmd)
   "Execute a process running CMD."
   (message (concat "Running " cmd))
-  (compile cmd))
+  (compile cmd t))
 
 (defun npm-mode-npm-init ()
   "Run the npm init command."
