@@ -58,6 +58,10 @@
 (defvar npm-mode--modeline-name " npm"
   "Name of npm mode modeline name.")
 
+(defun npm-mode--ensure-npm-module ()
+  "Asserts that you're currently inside an npm module"
+  (npm-mode--project-file))
+
 (defun npm-mode--project-file ()
   "Return path to the project file, or nil.
 If project file exists in the current working directory, or a
@@ -76,9 +80,16 @@ nil."
                           (insert-file-contents project-file)
                           (buffer-string)))
          (json-hash (json-read-from-string json-contents))
+         (value (gethash prop json-hash))
          (commands (list)))
-    (maphash (lambda (key value) (setq commands (append commands (list (list key (format "%s %s" "npm" key)))))) (gethash prop json-hash))
-    commands))
+    (cond ((hash-table-p value)
+           (maphash (lambda (key value)
+                      (append-to-list
+                       commands
+                       (list (list key (format "%s %s" "npm" key)))))
+                    value)
+           commands)
+          (t value))))
 
 (defun npm-mode--get-project-scripts ()
   "Get a list of project scripts."
@@ -88,10 +99,23 @@ nil."
   "Get a list of project dependencies."
   (npm-mode--get-project-property "dependencies"))
 
-(defun npm-mode--exec-process (cmd)
+(defun npm-mode--exec-process (cmd &optional comint)
   "Execute a process running CMD."
-  (message (concat "Running " cmd))
-  (compile cmd))
+  (let ((compilation-buffer-name-function
+         (lambda (mode)
+           (format "*npm:%s - %s*"
+                   (npm-mode--get-project-property "name") cmd))))
+    (message (concat "Running " cmd))
+    (compile cmd comint)))
+
+(defun npm-mode-npm-clean ()
+  "Run the 'npm list' command."
+  (interactive)
+  (let ((dir (concat (file-name-directory (npm-mode--ensure-npm-module)) "node_modules")))
+    (if (file-directory-p dir)
+      (when (yes-or-no-p (format "Are you sure you wish to delete %s" dir))
+        (npm-mode--exec-process (format "rm -rf %s" dir)))
+      (message (format "%s has already been cleaned" dir)))))
 
 (defun npm-mode-npm-init ()
   "Run the npm init command."
@@ -124,11 +148,15 @@ nil."
   (interactive)
   (npm-mode--exec-process "npm list --depth=0"))
 
-(defun npm-mode-npm-run ()
+(defun npm-run--read-command ()
+  (completing-read "Run script: " (npm-mode--get-project-scripts)))
+
+(defun npm-mode-npm-run (script &optional comint)
   "Run the 'npm run' command on a project script."
-  (interactive)
-  (let ((script (completing-read "Run script: " (npm-mode--get-project-scripts))))
-    (npm-mode--exec-process (format "npm run %s" script))))
+  (interactive
+   (list (npm-run--read-command)
+         (consp current-prefix-arg)))
+  (npm-mode--exec-process (format "npm run %s" script) comint))
 
 (defun npm-mode-visit-project-file ()
   "Visit the project file."
