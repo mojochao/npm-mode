@@ -84,9 +84,10 @@ nil."
          (commands (list)))
     (cond ((hash-table-p value)
            (maphash (lambda (key value)
-                      (append-to-list
-                       commands
-                       (list (list key (format "%s %s" "npm" key)))))
+                      (setq commands
+                            (append commands
+                                    (list (list key (format "%s %s" "npm" key))))
+                            ))
                     value)
            commands)
           (t value))))
